@@ -1,0 +1,42 @@
+---
+title: "Agron508_assignment1"
+author: "Anabelle"
+date: "1/25/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### equation to get PPFD
+
+
+```{r}
+PPFD<-function(irr){
+    result<-irr*1/(2.35*10^5)
+return(result)
+}
+
+PPFD(500)
+```
+
+### Planck's equation 
+
+
+```{r}
+h<-6.626*10^-34 # Planck's constant (J*s)
+c<-2.997925*10^8 # speed of light (m/s)  or 10^17 nm/s
+k<-1.381*10^-23 # Boltzmann's constant (J/K)
+
+planck<-function(wl,temp){  # wl = wavelength (m), T = temperature (K)
+  num<-2*pi*h*c^2
+  den<-wl^5*exp((h*c/k+wl+temp)-1)
+  result<-num/den
+  return(result)
+}
+```
+
+
+
