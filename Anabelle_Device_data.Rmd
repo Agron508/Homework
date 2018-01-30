@@ -1,0 +1,46 @@
+---
+title: "Agron508_Week4"
+author: "Anabelle"
+date: "1/30/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## reading and plotting the data from our class on January 29th 
+
+
+```{r}
+library(readr)
+tab<-read_csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
+
+library(dplyr)
+library(ggplot2)
+```
+
+Some cleaning
+
+
+```{r}
+data<-tab[2:482,] # select rows
+data<-data %>% rename(waveL=Timestamp) # rename column 
+data$waveL<-as.numeric(as.vector(data$waveL)) # to get a x_continous scale, data need to be numeric not factor
+```
+
+Plot the Irradiance as a function of wavelenght (nm)
+
+```{r}
+time<-data[,82]# here I just pick a column randomly
+class(time)
+# time has to be converted into numeric 
+time<-as.numeric(unlist(time)) # I used unlist to convert all the element to a single numeric vector
+ggplot(data=data,aes(x=waveL,y=time))+
+  geom_line() +
+  scale_x_continuous(breaks = round(seq(min(data$waveL), max(data$waveL), by = 100),1)) +
+  scale_y_continuous(breaks = round(seq(min(time), max(time), by = 0.005),1)) +
+  xlab("wavelength (nm)") +
+  ylab("Irradiance")
+```
+
