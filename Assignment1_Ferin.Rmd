@@ -32,3 +32,12 @@ plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,50.0), ylim=c(0.0,3*1e-5), xlab='Wavele
 
 ``
 
+Kelsie and Theo chuck for Assign 1:
+lambda = 602.5 nm = 6.025E-1 m
+
+```{r}
+y = (h*c)/(lambda*k*T)
+
+
+```
+
