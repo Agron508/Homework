@@ -38,5 +38,51 @@ planck<-function(wl,temp){  # wl = wavelength (m), T = temperature (K)
 }
 ```
 
+#### Andy Solution
+
+```{r}
+h=6.62606896e-34
+c=2.99792458e8
+k=1.3806504e-23 
+lambda = seq(1e-8,1e-4, by=1e-8)
+T = 6000
+
+
+y=(2*pi*h*(c^2))/(lambda^5)*(1./(exp((h*c)/(lambda*k*T))-1))
+
+
+T2 = 288
+y2=(2*pi*h*(c^2))/(lambda^5)*(1./(exp((h*c)/(lambda*k*T2))-1))
+plot(1e6*lambda,1e-6*1e-6*y, xlim=c(0.0,5.0),ylim=c(0.0,100.0), xlab='Wavelength (um)', ylab='spectral emittance (MW/m2/um)')
+# par(new=T)
+# plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,10.0), ylim=c(0.0,1/10000.0), xlab='', ylab='', axes=F)
+# par(new=F)
+plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,50.0), ylim=c(0.0,3*1e-5), xlab='Wavelength (um)', ylab='spectral emittance (MW/m2/um)')
+```
+
+
+#### Active example Dark vision 
+
+```{r}
+lambda<-0.505 # micro m (or 505 nm)
+# area pupil = 2.83*10^-5 m2
+# intensity per are = 4.00*10^-11 * 2.83*10^-5 = 1.13 *10^-15
+intensity<-1.13 *10^-15
+# energy photon = 3.94*10^-19 J
+# E = hc/lambda (eV)
+hc<-1.24 *10^-6 # eV/ m
+hc<-1.24 # eV/micro m
+E<-hc/lambda 
+
+# one eV = 1.602 *10^-19 J 
+result<-1.602 *10^-19*E  # result in J
+number_photons<-intensity/result
+```
+
+
+
+
+
+
 
 
