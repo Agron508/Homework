@@ -38,7 +38,7 @@ planck<-function(wl,temp){  # wl = wavelength (m), T = temperature (K)
 }
 ```
 
-#### Andy Solution
+#### Andy Solution for Planck equation
 
 ```{r}
 h=6.62606896e-34
@@ -81,6 +81,23 @@ number_photons<-intensity/result
 
 
 
+##### example CO2 - O2
+
+```{r}
+
+# step 1
+O2<-0.21
+CO2<-0.0004
+result1<-O2/CO2
+
+# step 2
+Temp<-25
+result2<-result1*1/Temp
+
+# step 2
+tau<-75
+result3<-tau/result2
+```
 
 
 
