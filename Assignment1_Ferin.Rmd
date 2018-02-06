@@ -33,11 +33,23 @@ plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,50.0), ylim=c(0.0,3*1e-5), xlab='Wavele
 ``
 
 Kelsie and Theo chuck for Assign 1:
-lambda = 602.5 nm = 6.025E-1 m
+Pg 105 on physics book PDF
 
 ```{r}
-y = (h*c)/(lambda*k*T)
+lambda2 = seq(6.00e-7,6.05e-7, by=1e-10)
+bookT = 5800
+y = (h*c)/(lambda2*k*bookT)
+plot(lambda2,y,xlab='Wavelength (m)',ylab='Plancks Exponential')
 
+```
+
+```{r}
+I=((2*pi)*(h)*(c**2)/((lambda2**5)*(exp(y)-1)))
+plot(lambda2,I,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2)')
+```
+```{r}
+Ilambda = (I*(max(lambda2)-min(lambda2)))*1e-6
+plot(I,Ilambda,xlab='Spectral Emittance (W/m^2)',ylab='Intensity (MW/m^2)')
 
 ```
 
