@@ -36,7 +36,7 @@ Kelsie and Theo chuck for Assign 1:
 Pg 105 on physics book PDF
 
 ```{r}
-lambda2 = seq(6.00e-7,6.05e-7, by=1e-10)
+lambda2 = seq(4.00e-7,7.05e-7, by=1e-10)
 bookT = 5800
 y = (h*c)/(lambda2*k*bookT)
 plot(lambda2,y,xlab='Wavelength (m)',ylab='Plancks Exponential')
@@ -45,11 +45,15 @@ plot(lambda2,y,xlab='Wavelength (m)',ylab='Plancks Exponential')
 
 ```{r}
 I=((2*pi)*(h)*(c**2)/((lambda2**5)*(exp(y)-1)))
-plot(lambda2,I,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2)')
+plot(lambda2,I,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)')
 ```
 ```{r}
 Ilambda = (I*(max(lambda2)-min(lambda2)))*1e-6
-plot(I,Ilambda,xlab='Spectral Emittance (W/m^2)',ylab='Intensity (MW/m^2)')
+plot(I,Ilambda,xlab='Spectral Emittance (W/m^2/m)',ylab='Intensity (MW/m^2)')
 
 ```
+look at spectrum from class and compare actual amount of energy in waveband to this data
+compare it
+annotate the code explain units for parameters
+dynamic to look at different wavebands 
 
