@@ -1,6 +1,6 @@
 ---
 title: "Agron508_assignment1"
-author: "Anabelle"
+author: "Anabelle - Lin"
 date: "1/25/2018"
 output: html_document
 ---
