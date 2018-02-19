@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-### equation to get PPFD
+#### equation to get PPFD
 
 
 ```{r}
@@ -22,7 +22,7 @@ return(result)
 PPFD(500)
 ```
 
-### Planck's equation 
+#### Planck's equation 
 
 
 ```{r}
@@ -61,7 +61,7 @@ plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,50.0), ylim=c(0.0,3*1e-5), xlab='Wavele
 ```
 
 
-hhhhh#### Active example Dark vision 
+#### Active example Dark vision 
 
 ```{r}
 lambda<-0.505 # micro m (or 505 nm)
@@ -81,8 +81,8 @@ number_photons<-intensity/result
 
 
 
-##### example CO2 - O2
-#Purpose:calculate CO2/O2 ratio in plant
+#### example CO2 - O2
+######Purpose:calculate CO2/O2 ratio in plant
 ```{r}
 
 #pick one (this is from Zhu's paper Fig.3)
