@@ -112,9 +112,9 @@ ratio3
 ```
 
 
-###relationship of efficiency with temperature
-###2.18.2018
-###based on paper: Improved temperature response functions for models of Rubisco-limited photosynthesis
+### relationship of efficiency with temperature
+### 2.18.2018
+### based on paper: Improved temperature response functions for models of Rubisco-limited photosynthesis
 
 ```{r}
 #this is the function of tau with temperature
