@@ -1,0 +1,96 @@
+---
+title: "Assignment1"
+author: "Kelsie Ferin and Theo"
+date: "January 29, 2018"
+output: html_document
+---
+
+
+## Assignment 1 
+
+Constants
+```{r}
+h=6.62606896e-34
+c=2.99792458e8
+k=1.3806504e-23 
+#lambda = seq(3.4e-7,8.05e-7, by=1e-10)
+lambda = seq(6.0e-7,6.05e-7, by=1e-10)
+T = 5800
+```
+
+Example problem from pg 105 of pdf in physics textbook
+```{r}
+# Equation 1
+y = (h*c)/(lambda*k*T)
+plot(lambda,y,xlab='Wavelength (m)',ylab='Plancks Exponential',main='Equation 1')
+
+# Equation 2
+I=((2*pi)*(h)*(c**2)/((lambda**5)*(exp(y)-1)))
+plot(lambda,I,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)',main='Equation 2')
+
+# Equation 3
+Ilambda = (I*(max(lambda)-min(lambda)))*1e-6
+plot(I,Ilambda,xlab='Spectral Emittance (W/m^2/m)',ylab='Intensity (MW/m^2)',main='Equation 3')
+
+```
+
+
+## Things to add in to the figures above
+look at spectrum from class and compare actual amount of energy in waveband to this data
+compare it
+annotate the code explain units for parameters
+dynamic to look at different wavebands 
+
+## Power In Wave Band
+## Note: Spectral emittance is what Plancks's Law gives for the sun with this temperature. Spectral irradience is what is measured here on Earth. These values will NOT be the same due to Earth's atmosphere and its absorbtion in some wavelengths
+```{r}
+integrate(I,lower = min(lambda), upper = max(lambda))
+```
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## reading and plotting the data from our class on January 29th 
+
+
+```{r}
+library(readr)
+tab<-read_csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
+
+library(dplyr)
+library(ggplot2)
+```
+
+Some cleaning
+
+
+```{r}
+data<-tab[2:482,] # select rows
+data<-data %>% rename(waveL=Timestamp) # rename column 
+data$waveL<-as.numeric(as.vector(data$waveL)) # to get a x_continous scale, data need to be numeric not factor
+```
+
+Plot the Irradiance as a function of wavelenght (nm)
+
+```{r}
+time<-data[,82]# here I just pick a column randomly
+class(time)
+# time has to be converted into numeric 
+time<-as.numeric(unlist(time)) # I used unlist to convert all the element to a single numeric vector
+ggplot(data=data,aes(x=waveL,y=time))+
+  geom_line() +
+  scale_x_continuous(breaks = round(seq(min(data$waveL), max(data$waveL), by = 100),1)) +
+  scale_y_continuous(breaks = round(seq(min(time), max(time), by = 0.005),1)) +
+  xlab("wavelength (nm)") +
+  ylab("Irradiance")
+```
+```{r}
+band_data = data[263:268,82]
+```
+
+
+
+
