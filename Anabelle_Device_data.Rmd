@@ -2,7 +2,9 @@
 title: "Agron508_Week4"
 author: "Anabelle"
 date: "1/30/2018"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -43,4 +45,21 @@ ggplot(data=data,aes(x=waveL,y=time))+
   xlab("wavelength (nm)") +
   ylab("Irradiance")
 ```
+
+```{r}
+
+PPFD <- function(time){
+  irr <- time              ## our data set in W/m2
+  PAR <- 2.35*10^5         ## solar constant waveband for PAR in J/mol
+  
+  PPFD <- irr/PAR          ## answer in mol/(m2 sec)
+  
+  return(PPFD)
+}
+
+```
+
+
+
+
 
