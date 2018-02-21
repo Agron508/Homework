@@ -1,6 +1,9 @@
 ---
 title: "Assignment1"
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 
@@ -13,7 +16,7 @@ h=6.62606896e-34
 c=2.99792458e8
 k=1.3806504e-23 
 lambda = seq(1e-8,1e-4, by=1e-8)
-T = 6000
+T = 5770
 
 
 y=(2*pi*h*(c^2))/(lambda^5)*(1./(exp((h*c)/(lambda*k*T))-1))
@@ -26,6 +29,12 @@ plot(1e6*lambda,1e-6*1e-6*y, xlim=c(0.0,5.0),ylim=c(0.0,100.0), xlab='Wavelength
 # plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,10.0), ylim=c(0.0,1/10000.0), xlab='', ylab='', axes=F)
 # par(new=F)
 plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,50.0), ylim=c(0.0,3*1e-5), xlab='Wavelength (um)', ylab='spectral emittance (MW/m2/um)')
+totalflux=sum(y)*5.25*1e-26
+solarpower=3.87e26
+solarirradiance=solarpower/6.09e18
+ratio=1368/solarirradiance
+plot(1e6*lambda,1e-3*1e-6*y*ratio, xlim=c(0.0,3.0),ylim=c(0.0,3.0), xlab='Wavelength (um)', ylab='spectral emittance (kW/m2/um)')
+totalterrestiralflux=sum(y*ratio)
 ```
 
 ``
