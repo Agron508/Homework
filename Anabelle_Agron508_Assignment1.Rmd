@@ -115,9 +115,8 @@ ratio3
 
 ```{r}
 library(readr)
-tab<-read_csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
-
-library(dplyr)
+#tab<-read_csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
+tab<-read.csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
 library(ggplot2)
 ```
 
@@ -126,7 +125,7 @@ Some cleaning
 
 ```{r}
 data<-tab[2:482,] # select rows
-data<-data %>% rename(waveL=Timestamp) # rename column 
+colnames(data)[1]<-"waveL"
 data$waveL<-as.numeric(as.vector(data$waveL)) # to get a x_continous scale, data need to be numeric not factor
 ```
 
