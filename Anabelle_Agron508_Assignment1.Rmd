@@ -62,22 +62,42 @@ plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,50.0), ylim=c(0.0,3*1e-5), xlab='Wavele
 
 
 #### Active example Dark vision 
-
+###### description step by step for one value of wavelength 
 ```{r}
+
 lambda<-0.505 # micro m (or 505 nm)
 # area pupil = 2.83*10^-5 m2
-# intensity per are = 4.00*10^-11 * 2.83*10^-5 = 1.13 *10^-15
-intensity<-1.13 *10^-15
+# 4.00*10^-11 W/m2 is the intensity for dark- adapted vision for human
+# intensity per area = 4.00*10^-11 * 2.83*10^-5 = 1.13 *10^-15 J/s (reminder 1 watt = 1 J/s)
+intensity<-1.13 *10^-15 
 # energy photon = 3.94*10^-19 J
 # E = hc/lambda (eV)
 hc<-1.24 *10^-6 # eV/ m
 hc<-1.24 # eV/micro m
 E<-hc/lambda 
-
 # one eV = 1.602 *10^-19 J 
 result<-1.602 *10^-19*E  # result in J
 number_photons<-intensity/result
 ```
+
+
+###### function for any value of wavelenght (lambda in micro m)
+```{r}
+
+numberphotons<-function(lambda) {
+  
+  intensity<-1.13 *10^-15 
+  hc<-1.24 
+  E<-hc/lambda 
+  denom<-1.602 *10^-19*E  
+  result<-intensity/denom
+  return(result)
+}
+```
+
+
+
+
 
 
 
