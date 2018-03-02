@@ -1,0 +1,206 @@
+---
+title: "Agron508_assignment1"
+author: "Anabelle - Lin - Mitch"
+date: "1/25/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#### equation to get PPFD
+
+
+```{r}
+PPFD<-function(irr){
+    result<-irr*1/(2.35*10^5)
+return(result)
+}
+
+PPFD(500)
+```
+
+#### Planck's equation 
+
+
+```{r}
+h<-6.626*10^-34 # Planck's constant (J*s)
+c<-2.997925*10^8 # speed of light (m/s)  or 10^17 nm/s
+k<-1.381*10^-23 # Boltzmann's constant (J/K)
+
+planck<-function(wl,temp){  # wl = wavelength (m), T = temperature (K)
+  num<-2*pi*h*c^2
+  den<-wl^5*exp((h*c/k+wl+temp)-1)
+  result<-num/den
+  return(result)
+}
+```
+
+#### Andy Solution for Planck equation
+
+```{r}
+h=6.62606896e-34
+c=2.99792458e8
+k=1.3806504e-23 
+lambda = seq(1e-8,1e-4, by=1e-8)
+T = 6000
+
+
+y=(2*pi*h*(c^2))/(lambda^5)*(1./(exp((h*c)/(lambda*k*T))-1))
+
+
+T2 = 288
+y2=(2*pi*h*(c^2))/(lambda^5)*(1./(exp((h*c)/(lambda*k*T2))-1))
+plot(1e6*lambda,1e-6*1e-6*y, xlim=c(0.0,5.0),ylim=c(0.0,100.0), xlab='Wavelength (um)', ylab='spectral emittance (MW/m2/um)')
+# par(new=T)
+# plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,10.0), ylim=c(0.0,1/10000.0), xlab='', ylab='', axes=F)
+# par(new=F)
+plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,50.0), ylim=c(0.0,3*1e-5), xlab='Wavelength (um)', ylab='spectral emittance (MW/m2/um)')
+```
+
+
+#### Active example Dark vision 
+###### description step by step for one value of wavelength 
+```{r}
+
+lambda<-0.505 # micro m (or 505 nm)
+# area pupil = 2.83*10^-5 m2
+# 4.00*10^-11 W/m2 is the intensity for dark- adapted vision for human
+# intensity per area = 4.00*10^-11 * 2.83*10^-5 = 1.13 *10^-15 J/s (reminder 1 watt = 1 J/s)
+intensity<-1.13 *10^-15 
+# energy photon = 3.94*10^-19 J
+# E = hc/lambda (eV)
+hc<-1.24 *10^-6 # eV/ m
+hc<-1.24 # eV/micro m
+E<-hc/lambda 
+# one eV = 1.602 *10^-19 J 
+result<-1.602 *10^-19*E  # result in J
+number_photons<-intensity/result
+```
+
+
+###### function for any value of wavelenght (lambda in micro m)
+```{r}
+
+numberphotons<-function(lambda) {
+  
+  intensity<-1.13 *10^-15 
+  hc<-1.24 
+  E<-hc/lambda 
+  denom<-1.602 *10^-19*E  
+  result<-intensity/denom
+  return(result)
+}
+```
+
+
+
+
+#### example CO2 - O2
+######Purpose:calculate CO2/O2 ratio in plant
+```{r}
+
+#pick one (this is from Zhu's paper Fig.3)
+ #present
+ CO2<-0.0004 
+ #past  #220ppm
+ CO2<-0.00022
+ #future   #700ppm
+ CO2<-0.0007
+
+# step 1:get into plant (physically diffusion)
+O2<-0.21  # keep this value
+ratio1<-O2/CO2
+
+# step 2:water dissolving
+alpha<-25  #This is the CO2/O2 Solubility ratio at 25 degree
+ratio2<-ratio1*1/alpha  
+
+# step 3:
+tau<-75  #This is the CO2/O2 Specificity ratio 
+ratio3<-tau/ratio2
+ratio3
+
+#results:
+#past     ratio3:1.964286
+#future    ratio3:6.25
+```
+
+
+
+#relationship of efficiency with temperature
+#2.18.2018
+#based on paper: Improved temperature response functions for models of Rubisco-limited photosynthesis
+
+```{r}
+#this is the function of tau with temperature
+#this is equation 6 in the paper
+  R=8.31445  #molar gas constant, M2kgs-2K-1mol-1
+  Temp.f = function(c,Ha){
+    parameter = function(Tk){#Tk is leaf temeprature
+      exp(c-Ha/(R*Tk))
+    }
+    parameter
+  }
+  
+  #this is the function of leaf temeprature
+  #all c and Ha value are from table 1 in the paper
+  Vc.max = Temp.f(26.35,65.33)
+  Vo.max = Temp.f(22.98,60.11)
+  Ko = Temp.f(20.3,36.38)#MMOL
+  Kc =  Temp.f(38.05,79.43)#umol
+  tau = Vc.max(temp)*Ko(temp)/(Kc(temp)*Vo.max(temp))
+  
+#efficiency
+#this is from Zhu's paper
+efficiency = function (CO2,O2,temp){
+  tau = Vc.max(temp)*Ko(temp)*1000/(Kc(temp)*Vo.max(temp))
+  phi = O2/(CO2*tau) #this is the ratio of RuBP oxygenation to carboxylation
+  dpr = 1-3*(1-0.5*phi)/(3+3.5*phi)  #maximal energy conversion efficiency
+  dpr
+}
+leaf.temp=c(1:25)
+effici = efficiency(0.0004,0.21,leaf.temp)
+plot(leaf.temp,effici,type="l")
+```
+
+
+#### Device - Read data
+
+```{r}
+library(readr)
+#tab<-read_csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
+tab<-read.csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
+library(ggplot2)
+```
+
+Some cleaning
+
+
+```{r}
+data<-tab[2:482,] # select rows
+colnames(data)[1]<-"waveL"
+data$waveL<-as.numeric(as.vector(data$waveL)) # to get a x_continous scale, data need to be numeric not factor
+```
+
+Plot the Irradiance as a function of wavelenght (nm)
+
+```{r}
+time<-data[,82]# here I just pick a column randomly
+class(time)
+# time has to be converted into numeric 
+time<-as.numeric(unlist(time)) # I used unlist to convert all the element to a single numeric vector
+ggplot(data=data,aes(x=waveL,y=time))+
+  geom_line() +
+  scale_x_continuous(breaks = round(seq(min(data$waveL), max(data$waveL), by = 100),1)) +
+  scale_y_continuous(breaks = round(seq(min(time), max(time), by = 0.005),1)) +
+  xlab("wavelength (nm)") +
+  ylab("Irradiance")
+```
+
+
+
+
+
