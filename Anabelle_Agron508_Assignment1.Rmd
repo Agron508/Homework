@@ -203,5 +203,30 @@ ggplot(data=data,aes(x=waveL,y=time))+
 
 
 
+#### Yield potential (kg/m2)
 
+St = total incident solar radiation during growing season of which 48.7% is photosynthetically active (MJ/m2)
+Ei = light interception efficiency (between 50-75%)
+Ec = energy conversion efficiency
+Ep = partitioning efficiency or harvest index (here ignored)
+Yp = yield potential (MJ/m2)
+Yp_bis = yield potential in kg/m2
+S_ec = seed energy content (MJ/kg) 
+S_ec = leaf energy content
+
+```{r}
+St=2000
+Ei=0.6 
+Ec = 0.025
+Yp = St*0.478*Ei*Ec
+
+S_ec = 19
+S_ec = 22.5
+
+Yp_bis_leaf=Yp/S_ec
+Yp_bis_seed=Yp/S_ec
+
+print(Yp_bis_seed)
+print(Yp_bis_leaf)
+```
 
