@@ -12,12 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### equation to get PPFD
 
+PPFD is photosynthetic photon flux density in mol/m2/s
+Irradiance is the radiant flux received by a surface per unit of area in W/m2
+Energy content in the PAR waveband = 2.35*10^5 J/mol
 
 ```{r}
-# PPFD is photosynthetic photon flux density in mol/m2/s
-# irradiance = irr in W/m2
-# energy content in the PAR waveband = 2.35*10^5 J/mol
-
+# irr = irradiance
 PPFD<-function(irr){
     result<-irr*1/(2.35*10^5)
 return(result)
