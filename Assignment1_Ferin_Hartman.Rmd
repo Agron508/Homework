@@ -2,82 +2,92 @@
 title: "Assignment1"
 author: "Kelsie Ferin and Theo"
 date: "January 29, 2018"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 
 ## Assignment 1 
 
-Constants
+### Part 1: Example problem from the physics text book (pg. 105)
+
+Below are the constants that will be used throuout the first part of the code.
 ```{r}
+# Planck's constant [Js]
 h=6.62606896e-34
-c=2.99792458e8
+# speed of light [m/s]
+c=2.99792458e8 
+# Boltzman constant [J/K]
 k=1.3806504e-23 
-#lambda = seq(3.4e-7,8.05e-7, by=1e-10)
-lambda = seq(6.0e-7,6.05e-7, by=1e-10)
+
+# temperature used for sun in example [K]
 T = 5800
 ```
 
-Example problem from pg 105 of pdf in physics textbook
+To calculate the following equations of a blackbody with a different waveband, change sequence range for lambda!
+```{r}
+# the following lambda will not be used, this is for the entire spectrum of visible light
+#lambda = seq(3.4e-7,8.05e-7, by=1e-10)
+
+# this lambda sequence is for the band of wavelengths used in the example problem [m]
+lambda = seq(6.0e-7,6.05e-7, by=1e-10)
+```
+
+The following 3 equations are for each 3 steps in the example problem. 
+
+Equation 1: The exponential portion of Planck's equation. This is unitless.
 ```{r}
 # Equation 1
 y = (h*c)/(lambda*k*T)
-plot(lambda,y,xlab='Wavelength (m)',ylab='Plancks Exponential',main='Equation 1')
+plot(lambda,y,xlab='Wavelength (m)',ylab='Plancks Exponential',main='Part #1: Equation 1')
+```
 
-# Equation 2
+Equation #2: Spectral Emittance of the sun (I; W/m^2/m)
+```{r}
 I=((2*pi)*(h)*(c**2)/((lambda**5)*(exp(y)-1)))
-plot(lambda,I,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)',main='Equation 2')
+plot(lambda,I,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)',main='Part #1: Equation 2')
+```
 
-# Equation 3
+Equation #3: This plot is the intesnity (MW/m^2) for the given spectral emittance (W/m^2/m) values calculated in equation 2.
+```{r}
 Ilambda = (I*(max(lambda)-min(lambda)))*1e-6
-plot(I,Ilambda,xlab='Spectral Emittance (W/m^2/m)',ylab='Intensity (MW/m^2)',main='Equation 3')
-
+plot(I,Ilambda,xlab='Spectral Emittance (W/m^2/m)',ylab='Intensity (MW/m^2)',main='Part #1: Equation 3')
 ```
 
+### Part 2: Power within a waveband
+Here we will compare the total amount of power of the blackbody calculation to the data collected from the spectral radiaometer in class. 
+Just as a reminder, spectral emittance is what Plancks's Law gives for the sun with this temperature. Spectral irradience is what is measured here on Earth. These values will NOT be the same due to Earth's atmosphere and its absorbtion in some wavelengths
 
-## Things to add in to the figures above
-look at spectrum from class and compare actual amount of energy in waveband to this data
-compare it
-annotate the code explain units for parameters
-dynamic to look at different wavebands 
-
-## Power In Wave Band
-## Note: Spectral emittance is what Plancks's Law gives for the sun with this temperature. Spectral irradience is what is measured here on Earth. These values will NOT be the same due to Earth's atmosphere and its absorbtion in some wavelengths
+The equations in part 1 use [m] for the wavelenths. We need to convert these to nm to stay consistent with the collected data. 
 ```{r}
-integrate(I,lower = min(lambda), upper = max(lambda))
+lambda_nm=lambda*1e+9
+I_new = I/1e+9
+plot(lambda_nm,I_new,xlab='Wavelength (nm)',ylab='Spectral Emittance (W/m^2/nm)',main='Part #2: Equation 1')
 ```
 
+Now we need to use the values collected during class. The following chunk of code is from Anabelle:
 
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## reading and plotting the data from our class on January 29th 
-
-
-```{r}
+```{r, include=FALSE}
+# Open the librarys that are needed to do the following steps. 
+#knitr::opts_chunk$set(echo = TRUE)
 library(readr)
-tab<-read_csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
-
 library(dplyr)
 library(ggplot2)
 ```
 
-Some cleaning
-
-
 ```{r}
+# Read in the data
+tab<-read_csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
+
+# Some cleaning
 data<-tab[2:482,] # select rows
 data<-data %>% rename(waveL=Timestamp) # rename column 
 data$waveL<-as.numeric(as.vector(data$waveL)) # to get a x_continous scale, data need to be numeric not factor
-```
 
-Plot the Irradiance as a function of wavelenght (nm)
-
-```{r}
+#Plot the Spectral Irradiance as a function of wavelenght (nm)
 time<-data[,82]# here I just pick a column randomly
-class(time)
+#class(time)
 # time has to be converted into numeric 
 time<-as.numeric(unlist(time)) # I used unlist to convert all the element to a single numeric vector
 ggplot(data=data,aes(x=waveL,y=time))+
@@ -85,12 +95,33 @@ ggplot(data=data,aes(x=waveL,y=time))+
   scale_x_continuous(breaks = round(seq(min(data$waveL), max(data$waveL), by = 100),1)) +
   scale_y_continuous(breaks = round(seq(min(time), max(time), by = 0.005),1)) +
   xlab("wavelength (nm)") +
-  ylab("Irradiance")
+  ylab("Spectral Irradiance (W/m2/micrometer)")
+```
+
+
+First we need to convert the spectral irradiance from W/m2/micrometer to W/m2/nm:
+```{r}
+irradiance = time*1e+3
+wavelength = data$waveL
+plot(wavelength,irradiance,type="o",xlab='Wavelength (nm)',ylab='Spectral Irradiance (W/m^2/nm)',main='Part #2: Collected Data')
+```
+
+We only want to use the wavelength band  of 600-605nm to compare to the black body, which is shown in the following plot. 
+```{r}
+irradiance_data = irradiance[261:266]
+band_data = data$waveL[261:266]
+plot(band_data,irradiance_data,type="o",xlab='Wavelength (nm)',ylab='Spectral Irradiance (W/m^2/nm)',main='Part #2: Collected Data')
+```
+
+Lastly, we need to integrate the area under the curve for both the blackbody and observed values:
+```{r}
+# Blackbody Integration (emittance)
+bb_E_integ = sum(I_new * 0.1)
+cat("Blackbody value of total power: ", bb_E_integ, "W/m^2")
 ```
 ```{r}
-band_data = data[263:268,82]
+# Observed Integration (irradiance)
+obs_I_integ = sum(irradiance_data)
+cat("Observed alue of total power: ", obs_I_integ, "W/m^2")
 ```
-
-
-
 
