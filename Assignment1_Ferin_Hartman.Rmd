@@ -3,8 +3,8 @@ title: "Assignment1"
 author: "Kelsie Ferin and Theo"
 date: "January 29, 2018"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 
@@ -125,12 +125,12 @@ cat("Observed alue of total power: ", obs_I_integ, "W/m^2")
 
 ```
 
-Part Three: Photons Required For Sight
+### Part 3: Example problem; Photons required for sight!
 
 First, we define the constants that will be used in these calculations:
 ```{r}
 #Intensity of radiation reaching the eye in order for the human eye to percieve light.
-I = 4.0e-4 # Units - W/m^2
+I = 4.0e-11 # Units - W/m^2
 
 #Plancks Constant 
 h = 6.63e-34 # Units - J*s
@@ -175,15 +175,34 @@ e = (h*c)/lam_pupil
 ```
 Fifth, we calculate the amount of photons reaching the eye
 ```{r}
+
+#Create Vector for Calculations
+Photons_reach_eye = matrix(0,401,7)
+
 #Number of photons reaching the eye
-#for(i in 1:401) Photons_reach_eye(i,:) = Power_reach_eye(:)/e(i) #Units - photons/s
+for(i in 1:401){
+  for(j in 1:7){
+    Photons_reach_eye[i,j] = Power_reach_eye[j]/e[i] #Units - photons/s
+  }
+}
+  
 
 ```
-Fifth, we plot the results of this experiment:
+Sixth, we plot the results of this experiment:
 
 ```{r}
+library(ggplot2)
+#Set data up in a frame to plot
+data_pup = data.frame(x = lam_pupil,y1 = Photons_reach_eye[,1], y2 = Photons_reach_eye[,2], y3 = Photons_reach_eye[,3], y4 = Photons_reach_eye[,4], y5 = Photons_reach_eye[,5], y6 = Photons_reach_eye[,6], y7 = Photons_reach_eye[,7])
 
+#Plotting 
+col_set = rainbow(ncol(Photons_reach_eye))
+matplot(lam_pupil,Photons_reach_eye,type = "l",main = "Photons That Reach The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Wavelength (m)",ylab = "Number of Photons",lty = "solid", lwd = "2",col = col_set)
+leg.txt <- c("Pupil Size = 2mm","Pupil Size = 3mm","Pupil Size = 4mm","Pupil Size = 5mm","Pupil Size = 6mm","Pupil Size = 7mm","Pupil Size = 8mm")
+cex = .5
+legend(lam_pupil[1],Photons_reach_eye[401,7],leg.txt,cex = .5,lwd = 2, col = col_set)
 ```
+
 
 
 
