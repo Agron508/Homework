@@ -12,14 +12,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### equation to get PPFD
 
+PPFD is photosynthetic photon flux density in mol/m2/s
+Irradiance is the radiant flux received by a surface per unit of area in W/m2
+Energy content in the PAR waveband = 2.35*10^5 J/mol
 
 ```{r}
+# irr = irradiance
 PPFD<-function(irr){
     result<-irr*1/(2.35*10^5)
 return(result)
 }
 
-PPFD(500)
+PPFD(500) 
+# if irr = 500 W/m2, PPFD is equal to 2100 micromol/m2/s
 ```
 
 #### Planck's equation 
@@ -38,7 +43,7 @@ planck<-function(wl,temp){  # wl = wavelength (m), T = temperature (K)
 }
 ```
 
-#### Andy Solution for Planck equation
+####  Planck equation graph
 
 ```{r}
 h=6.62606896e-34
