@@ -43,7 +43,7 @@ planck<-function(wl,temp){  # wl = wavelength (m), T = temperature (K)
 }
 ```
 
-#### Andy Solution for Planck equation
+####  Planck equation graph
 
 ```{r}
 h=6.62606896e-34
