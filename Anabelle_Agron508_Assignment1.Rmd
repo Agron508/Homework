@@ -14,12 +14,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
+# PPFD is photosynthetic photon flux density in mol/m2/s
+# irradiance = irr in W/m2
+# energy content in the PAR waveband = 2.35*10^5 J/mol
+
 PPFD<-function(irr){
     result<-irr*1/(2.35*10^5)
 return(result)
 }
 
-PPFD(500)
+PPFD(500) 
+# if irr = 500 W/m2, PPFD is equal to 2100 micromol/m2/s
 ```
 
 #### Planck's equation 
