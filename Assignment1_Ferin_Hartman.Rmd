@@ -103,6 +103,8 @@ First we need to convert the spectral irradiance from W/m2/micrometer to W/m2/nm
 irradiance = time*1e+3
 wavelength = data$waveL
 plot(wavelength,irradiance,type="o",xlab='Wavelength (nm)',ylab='Spectral Irradiance (W/m^2/nm)',main='Part #2: Collected Data')
+sum(irradiance)*diff(wavelength)[1]
+
 ```
 
 We only want to use the wavelength band  of 600-605nm to compare to the black body, which is shown in the following plot. 
@@ -110,21 +112,31 @@ We only want to use the wavelength band  of 600-605nm to compare to the black bo
 irradiance_data = irradiance[261:266]
 band_data = data$waveL[261:266]
 plot(band_data,irradiance_data,type="o",xlab='Wavelength (nm)',ylab='Spectral Irradiance (W/m^2/nm)',main='Part #2: Collected Data')
+plot(lambda_nm,I_new,type="o",xlab='Wavelength (nm)',ylab='Spectral Emittance (W/m^2/nm)',main='Part #2: Equation 1')
 ```
 
 Lastly, we need to integrate the area under the curve for both the blackbody and observed values:
 ```{r}
 # Blackbody Integration (emittance)
-bb_E_integ = sum(I_new * 0.1)
+bb_E_integ = sum(I_new)*diff(lambda_nm)[1]
 cat("Blackbody value of total power: ", bb_E_integ, "W/m^2")
 ```
 ```{r}
 # Observed Integration (irradiance)
-obs_I_integ = sum(irradiance_data)
+obs_I_integ = sum(irradiance_data)*diff(band_data)[1]
 cat("Observed value of total power: ", obs_I_integ, "W/m^2")
-
 ```
 
+If we were to calculate the total power for the entire band of wavelenghts we would get:
+```{r}
+T2 = 6000
+lambda2 = seq(3.4e-7,8.05e-7, by=1e-10)
+y2 = (h*c)/(lambda2*k*T2)
+I2=((2*pi)*(h)*(c**2)/((lambda2**5)*(exp(y2)-1)))
+plot(lambda2,I2,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)',main='Part #1: Equation 2')
+tot = sum(I2)*diff(lambda2)[1]
+cat("Observed value of total power: ", tot, "W/m^2")
+```
 ### Part 3: Example problem; Photons required for sight!
 
 First, we define the constants that will be used in these calculations:
