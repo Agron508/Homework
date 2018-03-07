@@ -56,10 +56,10 @@ plot(I,Ilambda,xlab='Spectral Emittance (W/m^2/m)',ylab='Intensity (MW/m^2)',mai
 ```
 
 ### Part 2: Power within a waveband
-Here we will compare the total amount of power of the blackbody calculation to the data collected from the spectral radiaometer in class. 
+Here we will compare the total amount of power of the blackbody calculation to the data collected from the spectral radiometer in class. 
 Just as a reminder, spectral emittance is what Plancks's Law gives for the sun with this temperature. Spectral irradience is what is measured here on Earth. These values will NOT be the same due to Earth's atmosphere and its absorbtion in some wavelengths
 
-The equations in part 1 use [m] for the wavelenths. We need to convert these to nm to stay consistent with the collected data. 
+The equations in part 1 use [m] for the wavelengths. We need to convert these to nm to stay consistent with the collected data. 
 ```{r}
 lambda_nm=lambda*1e+9
 I_new = I/1e+9
@@ -84,7 +84,7 @@ data<-tab[2:482,] # select rows
 data<-data %>% rename(waveL=Timestamp) # rename column 
 data$waveL<-as.numeric(as.vector(data$waveL)) # to get a x_continous scale, data need to be numeric not factor
 
-#Plot the Spectral Irradiance as a function of wavelenght (nm)
+#Plot the Spectral Irradiance as a function of wavelength (nm)
 time<-data[,82]# here I just pick a column randomly
 #class(time)
 # time has to be converted into numeric 
@@ -201,6 +201,15 @@ matplot(lam_pupil,Photons_reach_eye,type = "l",main = "Photons That Reach The Hu
 leg.txt <- c("Pupil Size = 2mm","Pupil Size = 3mm","Pupil Size = 4mm","Pupil Size = 5mm","Pupil Size = 6mm","Pupil Size = 7mm","Pupil Size = 8mm")
 cex = .5
 legend(lam_pupil[1],Photons_reach_eye[401,7],leg.txt,cex = .5,lwd = 2, col = col_set)
+```
+
+##Now Lets Use The Spectrum Which We Measured To See How Many Photons Our Eyes Were Intercepting
+
+```{r}
+#Because we can calculate the number of photons by taking the Intensity of the Radiation divided by the energy of a photon at that wavelength, we can take the intensity measured divided by the power at that wavelength and come up with a total number of photons!
+
+
+
 ```
 
 
