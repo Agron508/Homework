@@ -1,10 +1,10 @@
 ---
-title: "Assignment1"
-author: "Kelsie Ferin and Theo"
-date: "January 29, 2018"
+title: "Assignment One: Agronomy 508"
+author: "Kelsie Ferin and Theo Hartman"
+date: "March 3, 2018"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 
@@ -12,7 +12,7 @@ output:
 
 ### Part 1: Example problem from the physics text book (pg. 105)
 
-Below are the constants that will be used throuout the first part of the code.
+Below are the constants that will be used throughout the first part of the code.
 ```{r}
 # Planck's constant [Js]
 h=6.62606896e-34
@@ -49,7 +49,7 @@ I=((2*pi)*(h)*(c**2)/((lambda**5)*(exp(y)-1)))
 plot(lambda,I,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)',main='Part #1: Equation 2')
 ```
 
-Equation #3: This plot is the intesnity (MW/m^2) for the given spectral emittance (W/m^2/m) values calculated in equation 2.
+Equation #3: This plot is the intensity (MW/m^2) for the given spectral emittance (W/m^2/m) values calculated in equation 2.
 ```{r}
 Ilambda = (I*(max(lambda)-min(lambda)))*1e-6
 plot(I,Ilambda,xlab='Spectral Emittance (W/m^2/m)',ylab='Intensity (MW/m^2)',main='Part #1: Equation 3')
@@ -94,7 +94,7 @@ ggplot(data=data,aes(x=waveL,y=time))+
   scale_x_continuous(breaks = round(seq(min(data$waveL), max(data$waveL), by = 100),1)) +
   scale_y_continuous(breaks = round(seq(min(time), max(time), by = 0.005),1)) +
   xlab("wavelength (nm)") +
-  ylab("Spectral Irradiance (W/m2/micrometer)")
+  ylab(expression(paste("Spectral Irradiance (W/m2/",mu,"m)")))
 ```
 
 
@@ -121,7 +121,7 @@ cat("Blackbody value of total power: ", bb_E_integ, "W/m^2")
 ```{r}
 # Observed Integration (irradiance)
 obs_I_integ = sum(irradiance_data)
-cat("Observed alue of total power: ", obs_I_integ, "W/m^2")
+cat("Observed value of total power: ", obs_I_integ, "W/m^2")
 
 ```
 
@@ -170,7 +170,7 @@ Fourth, we calculate the energy of a photon for wavelengths in the visible spect
 lam_pupil = seq(380e-9,780e-9,by = 1e-9) #Units - m
 
 #Energy of a photon
-e = (h*c)/lam_pupil
+e = (h*c)/lam_pupil #Units - J
 
 ```
 Fifth, we calculate the amount of photons reaching the eye
@@ -203,12 +203,27 @@ cex = .5
 legend(lam_pupil[1],Photons_reach_eye[401,7],leg.txt,cex = .5,lwd = 2, col = col_set)
 ```
 
-##Now Lets Use The Spectrum Which We Measured To See How Many Photons Our Eyes Were Intercepting
+##Now Let's Use The Measured Spectrum To See How Many Photons Our Eyes Were Intercepting
 
 ```{r}
-#Because we can calculate the number of photons by taking the Intensity of the Radiation divided by the energy of a photon at that wavelength, we can take the intensity measured divided by the power at that wavelength and come up with a total number of photons!
+#Because we can calculate the number of photons by taking the Intensity of the Radiation in our pupil divided by the energy of a photon at that wavelength, we can take the intensity measured divided by the power at that wavelength and come up with a total number of photons!
 
+#Lets assume a pupil size of 6mm
+#Calculating the Intensity of radiation hitting your eye
+Intensity_pupil = time * pupil_area[5] #Units - W
 
+#Calculating the photon energy of the wavelengths that we measured
+
+e_meas = (h*c)/(wavelength*1e-9) #Units - J
+
+#Now to calculate the number of photons that are making it to our eyes
+
+Photons_reach_eye_measured = Intensity_pupil/e_meas#Units - Photons/s
+
+#If we sum up all of the photons from every wavelength, we see about how many photons per second are hitting our eyes
+
+Total_Photons = sum(Photons_reach_eye_measured)#Units - Photons/s
+cat("Total Photons Reaching Our Eyes With Our Measured Data:", Total_Photons," Photons/s")
 
 ```
 

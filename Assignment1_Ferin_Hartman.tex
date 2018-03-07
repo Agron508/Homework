@@ -1,0 +1,428 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Assignment1},
+            pdfauthor={Kelsie Ferin and Theo},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{Assignment1}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{Kelsie Ferin and Theo}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{January 29, 2018}
+
+
+\begin{document}
+\maketitle
+
+\subsection{Assignment 1}\label{assignment-1}
+
+\subsubsection{Part 1: Example problem from the physics text book (pg.
+105)}\label{part-1-example-problem-from-the-physics-text-book-pg.-105}
+
+Below are the constants that will be used throuout the first part of the
+code.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Planck's constant [Js]}
+\NormalTok{h=}\FloatTok{6.62606896e-34}
+\CommentTok{# speed of light [m/s]}
+\NormalTok{c=}\FloatTok{2.99792458e8} 
+\CommentTok{# Boltzman constant [J/K]}
+\NormalTok{k=}\FloatTok{1.3806504e-23} 
+
+\CommentTok{# temperature used for sun in example [K]}
+\NormalTok{T =}\StringTok{ }\DecValTok{5800}
+\end{Highlighting}
+\end{Shaded}
+
+To calculate the following equations of a blackbody with a different
+waveband, change sequence range for lambda!
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# the following lambda will not be used, this is for the entire spectrum of visible light}
+\CommentTok{#lambda = seq(3.4e-7,8.05e-7, by=1e-10)}
+
+\CommentTok{# this lambda sequence is for the band of wavelengths used in the example problem [m]}
+\NormalTok{lambda =}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\FloatTok{6.0e-7}\NormalTok{,}\FloatTok{6.05e-7}\NormalTok{, }\DataTypeTok{by=}\FloatTok{1e-10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The following 3 equations are for each 3 steps in the example problem.
+
+Equation 1: The exponential portion of Planck's equation. This is
+unitless.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Equation 1}
+\NormalTok{y =}\StringTok{ }\NormalTok{(h}\OperatorTok{*}\NormalTok{c)}\OperatorTok{/}\NormalTok{(lambda}\OperatorTok{*}\NormalTok{k}\OperatorTok{*}\NormalTok{T)}
+\KeywordTok{plot}\NormalTok{(lambda,y,}\DataTypeTok{xlab=}\StringTok{'Wavelength (m)'}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{'Plancks Exponential'}\NormalTok{,}\DataTypeTok{main=}\StringTok{'Part #1: Equation 1'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment1_Ferin_Hartman_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+Equation \#2: Spectral Emittance of the sun (I; W/m\^{}2/m)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{I=((}\DecValTok{2}\OperatorTok{*}\NormalTok{pi)}\OperatorTok{*}\NormalTok{(h)}\OperatorTok{*}\NormalTok{(c}\OperatorTok{**}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\NormalTok{((lambda}\OperatorTok{**}\DecValTok{5}\NormalTok{)}\OperatorTok{*}\NormalTok{(}\KeywordTok{exp}\NormalTok{(y)}\OperatorTok{-}\DecValTok{1}\NormalTok{)))}
+\KeywordTok{plot}\NormalTok{(lambda,I,}\DataTypeTok{xlab=}\StringTok{'Wavelength (m)'}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{'Spectral Emittance (W/m^2/m)'}\NormalTok{,}\DataTypeTok{main=}\StringTok{'Part #1: Equation 2'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment1_Ferin_Hartman_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+Equation \#3: This plot is the intesnity (MW/m\^{}2) for the given
+spectral emittance (W/m\^{}2/m) values calculated in equation 2.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Ilambda =}\StringTok{ }\NormalTok{(I}\OperatorTok{*}\NormalTok{(}\KeywordTok{max}\NormalTok{(lambda)}\OperatorTok{-}\KeywordTok{min}\NormalTok{(lambda)))}\OperatorTok{*}\FloatTok{1e-6}
+\KeywordTok{plot}\NormalTok{(I,Ilambda,}\DataTypeTok{xlab=}\StringTok{'Spectral Emittance (W/m^2/m)'}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{'Intensity (MW/m^2)'}\NormalTok{,}\DataTypeTok{main=}\StringTok{'Part #1: Equation 3'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment1_Ferin_Hartman_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\subsubsection{Part 2: Power within a
+waveband}\label{part-2-power-within-a-waveband}
+
+Here we will compare the total amount of power of the blackbody
+calculation to the data collected from the spectral radiometer in class.
+Just as a reminder, spectral emittance is what Plancks's Law gives for
+the sun with this temperature. Spectral irradience is what is measured
+here on Earth. These values will NOT be the same due to Earth's
+atmosphere and its absorbtion in some wavelengths
+
+The equations in part 1 use {[}m{]} for the wavelengths. We need to
+convert these to nm to stay consistent with the collected data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lambda_nm=lambda}\OperatorTok{*}\FloatTok{1e+9}
+\NormalTok{I_new =}\StringTok{ }\NormalTok{I}\OperatorTok{/}\FloatTok{1e+9}
+\KeywordTok{plot}\NormalTok{(lambda_nm,I_new,}\DataTypeTok{xlab=}\StringTok{'Wavelength (nm)'}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{'Spectral Emittance (W/m^2/nm)'}\NormalTok{,}\DataTypeTok{main=}\StringTok{'Part #2: Equation 1'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment1_Ferin_Hartman_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+Now we need to use the values collected during class. The following
+chunk of code is from Anabelle:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Some cleaning}
+\NormalTok{data<-tab[}\DecValTok{2}\OperatorTok{:}\DecValTok{482}\NormalTok{,] }\CommentTok{# select rows}
+\NormalTok{data<-data }\OperatorTok{%>%}\StringTok{ }\KeywordTok{rename}\NormalTok{(}\DataTypeTok{waveL=}\NormalTok{Timestamp) }\CommentTok{# rename column }
+\NormalTok{data}\OperatorTok{$}\NormalTok{waveL<-}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{as.vector}\NormalTok{(data}\OperatorTok{$}\NormalTok{waveL)) }\CommentTok{# to get a x_continous scale, data need to be numeric not factor}
+
+\CommentTok{#Plot the Spectral Irradiance as a function of wavelength (nm)}
+\NormalTok{time<-data[,}\DecValTok{82}\NormalTok{]}\CommentTok{# here I just pick a column randomly}
+\CommentTok{#class(time)}
+\CommentTok{# time has to be converted into numeric }
+\NormalTok{time<-}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(time)) }\CommentTok{# I used unlist to convert all the element to a single numeric vector}
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data=}\NormalTok{data,}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{waveL,}\DataTypeTok{y=}\NormalTok{time))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_x_continuous}\NormalTok{(}\DataTypeTok{breaks =} \KeywordTok{round}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\KeywordTok{min}\NormalTok{(data}\OperatorTok{$}\NormalTok{waveL), }\KeywordTok{max}\NormalTok{(data}\OperatorTok{$}\NormalTok{waveL), }\DataTypeTok{by =} \DecValTok{100}\NormalTok{),}\DecValTok{1}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale_y_continuous}\NormalTok{(}\DataTypeTok{breaks =} \KeywordTok{round}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\KeywordTok{min}\NormalTok{(time), }\KeywordTok{max}\NormalTok{(time), }\DataTypeTok{by =} \FloatTok{0.005}\NormalTok{),}\DecValTok{1}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"wavelength (nm)"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Spectral Irradiance (W/m2/micrometer)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment1_Ferin_Hartman_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+First we need to convert the spectral irradiance from W/m2/micrometer to
+W/m2/nm:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{irradiance =}\StringTok{ }\NormalTok{time}\OperatorTok{*}\FloatTok{1e+3}
+\NormalTok{wavelength =}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{waveL}
+\KeywordTok{plot}\NormalTok{(wavelength,irradiance,}\DataTypeTok{type=}\StringTok{"o"}\NormalTok{,}\DataTypeTok{xlab=}\StringTok{'Wavelength (nm)'}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{'Spectral Irradiance (W/m^2/nm)'}\NormalTok{,}\DataTypeTok{main=}\StringTok{'Part #2: Collected Data'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment1_Ferin_Hartman_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+We only want to use the wavelength band of 600-605nm to compare to the
+black body, which is shown in the following plot.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{irradiance_data =}\StringTok{ }\NormalTok{irradiance[}\DecValTok{261}\OperatorTok{:}\DecValTok{266}\NormalTok{]}
+\NormalTok{band_data =}\StringTok{ }\NormalTok{data}\OperatorTok{$}\NormalTok{waveL[}\DecValTok{261}\OperatorTok{:}\DecValTok{266}\NormalTok{]}
+\KeywordTok{plot}\NormalTok{(band_data,irradiance_data,}\DataTypeTok{type=}\StringTok{"o"}\NormalTok{,}\DataTypeTok{xlab=}\StringTok{'Wavelength (nm)'}\NormalTok{,}\DataTypeTok{ylab=}\StringTok{'Spectral Irradiance (W/m^2/nm)'}\NormalTok{,}\DataTypeTok{main=}\StringTok{'Part #2: Collected Data'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment1_Ferin_Hartman_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+Lastly, we need to integrate the area under the curve for both the
+blackbody and observed values:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Blackbody Integration (emittance)}
+\NormalTok{bb_E_integ =}\StringTok{ }\KeywordTok{sum}\NormalTok{(I_new }\OperatorTok{*}\StringTok{ }\FloatTok{0.1}\NormalTok{)}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"Blackbody value of total power: "}\NormalTok{, bb_E_integ, }\StringTok{"W/m^2"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Blackbody value of total power:  398006.3 W/m^2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Observed Integration (irradiance)}
+\NormalTok{obs_I_integ =}\StringTok{ }\KeywordTok{sum}\NormalTok{(irradiance_data)}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"Observed value of total power: "}\NormalTok{, obs_I_integ, }\StringTok{"W/m^2"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Observed value of total power:  4582.41 W/m^2
+\end{verbatim}
+
+\subsubsection{Part 3: Example problem; Photons required for
+sight!}\label{part-3-example-problem-photons-required-for-sight}
+
+First, we define the constants that will be used in these calculations:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Intensity of radiation reaching the eye in order for the human eye to percieve light.}
+\NormalTok{I =}\StringTok{ }\FloatTok{4.0e-11} \CommentTok{# Units - W/m^2}
+
+\CommentTok{#Plancks Constant }
+\NormalTok{h =}\StringTok{ }\FloatTok{6.63e-34} \CommentTok{# Units - J*s}
+
+\CommentTok{#Speed of light in a vacuum}
+\NormalTok{c =}\StringTok{ }\FloatTok{3.0e8} \CommentTok{# Units - m/s}
+\end{Highlighting}
+\end{Shaded}
+
+Secondly, we calculate the area of the pupil: (According to NCBI the
+diameter of a human pupil ranges from 2 mm to 8mm)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Diameter of a human pupil}
+\NormalTok{d =}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DataTypeTok{by =} \DecValTok{1}\NormalTok{) }\CommentTok{# Units - mm}
+
+\CommentTok{#Convert the diameter to meters}
+\NormalTok{d =}\StringTok{ }\NormalTok{d}\OperatorTok{*}\FloatTok{1e-3} \CommentTok{# Units - m }
+
+\CommentTok{#Calculate the pupil area}
+\NormalTok{pupil_area =}\StringTok{ }\NormalTok{pi}\OperatorTok{*}\NormalTok{((d}\OperatorTok{/}\DecValTok{2}\NormalTok{)}\OperatorTok{^}\DecValTok{2}\NormalTok{) }\CommentTok{# Units - m^2}
+\end{Highlighting}
+\end{Shaded}
+
+Third, we calculate the power reaching the eye:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Power reaching the eye}
+\NormalTok{Power_reach_eye =}\StringTok{ }\NormalTok{I}\OperatorTok{*}\NormalTok{pupil_area }\CommentTok{# Units - W}
+\end{Highlighting}
+\end{Shaded}
+
+Fourth, we calculate the energy of a photon for wavelengths in the
+visible spectrum:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Range of wavelength in the visible spectrum}
+\NormalTok{lam_pupil =}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\FloatTok{380e-9}\NormalTok{,}\FloatTok{780e-9}\NormalTok{,}\DataTypeTok{by =} \FloatTok{1e-9}\NormalTok{) }\CommentTok{#Units - m}
+
+\CommentTok{#Energy of a photon}
+\NormalTok{e =}\StringTok{ }\NormalTok{(h}\OperatorTok{*}\NormalTok{c)}\OperatorTok{/}\NormalTok{lam_pupil }\CommentTok{#Units - J}
+\end{Highlighting}
+\end{Shaded}
+
+Fifth, we calculate the amount of photons reaching the eye
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Create Vector for Calculations}
+\NormalTok{Photons_reach_eye =}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{401}\NormalTok{,}\DecValTok{7}\NormalTok{)}
+
+\CommentTok{#Number of photons reaching the eye}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{401}\NormalTok{)\{}
+  \ControlFlowTok{for}\NormalTok{(j }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{7}\NormalTok{)\{}
+\NormalTok{    Photons_reach_eye[i,j] =}\StringTok{ }\NormalTok{Power_reach_eye[j]}\OperatorTok{/}\NormalTok{e[i] }\CommentTok{#Units - photons/s}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Sixth, we plot the results of this experiment:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\CommentTok{#Set data up in a frame to plot}
+\NormalTok{data_pup =}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ lam_pupil,}\DataTypeTok{y1 =}\NormalTok{ Photons_reach_eye[,}\DecValTok{1}\NormalTok{], }\DataTypeTok{y2 =}\NormalTok{ Photons_reach_eye[,}\DecValTok{2}\NormalTok{], }\DataTypeTok{y3 =}\NormalTok{ Photons_reach_eye[,}\DecValTok{3}\NormalTok{], }\DataTypeTok{y4 =}\NormalTok{ Photons_reach_eye[,}\DecValTok{4}\NormalTok{], }\DataTypeTok{y5 =}\NormalTok{ Photons_reach_eye[,}\DecValTok{5}\NormalTok{], }\DataTypeTok{y6 =}\NormalTok{ Photons_reach_eye[,}\DecValTok{6}\NormalTok{], }\DataTypeTok{y7 =}\NormalTok{ Photons_reach_eye[,}\DecValTok{7}\NormalTok{])}
+
+\CommentTok{#Plotting }
+\NormalTok{col_set =}\StringTok{ }\KeywordTok{rainbow}\NormalTok{(}\KeywordTok{ncol}\NormalTok{(Photons_reach_eye))}
+\KeywordTok{matplot}\NormalTok{(lam_pupil,Photons_reach_eye,}\DataTypeTok{type =} \StringTok{"l"}\NormalTok{,}\DataTypeTok{main =} \StringTok{"Photons That Reach The Human Eye at Different Wavelengths with Different Pupil Sizes"}\NormalTok{,}\DataTypeTok{cex.main =}\NormalTok{ .}\DecValTok{8}\NormalTok{,}\DataTypeTok{xlab =} \StringTok{"Wavelength (m)"}\NormalTok{,}\DataTypeTok{ylab =} \StringTok{"Number of Photons"}\NormalTok{,}\DataTypeTok{lty =} \StringTok{"solid"}\NormalTok{, }\DataTypeTok{lwd =} \StringTok{"2"}\NormalTok{,}\DataTypeTok{col =}\NormalTok{ col_set)}
+\NormalTok{leg.txt <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Pupil Size = 2mm"}\NormalTok{,}\StringTok{"Pupil Size = 3mm"}\NormalTok{,}\StringTok{"Pupil Size = 4mm"}\NormalTok{,}\StringTok{"Pupil Size = 5mm"}\NormalTok{,}\StringTok{"Pupil Size = 6mm"}\NormalTok{,}\StringTok{"Pupil Size = 7mm"}\NormalTok{,}\StringTok{"Pupil Size = 8mm"}\NormalTok{)}
+\NormalTok{cex =}\StringTok{ }\NormalTok{.}\DecValTok{5}
+\KeywordTok{legend}\NormalTok{(lam_pupil[}\DecValTok{1}\NormalTok{],Photons_reach_eye[}\DecValTok{401}\NormalTok{,}\DecValTok{7}\NormalTok{],leg.txt,}\DataTypeTok{cex =}\NormalTok{ .}\DecValTok{5}\NormalTok{,}\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =}\NormalTok{ col_set)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Assignment1_Ferin_Hartman_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\subsection{Now Lets Use The Spectrum Which We Measured To See How Many
+Photons Our Eyes Were
+Intercepting}\label{now-lets-use-the-spectrum-which-we-measured-to-see-how-many-photons-our-eyes-were-intercepting}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Because we can calculate the number of photons by taking the Intensity of the Radiation in our pupil divided by the energy of a photon at that wavelength, we can take the intensity measured divided by the power at that wavelength and come up with a total number of photons!}
+
+\CommentTok{#Lets assume a pupil size of 6mm}
+\CommentTok{#Calculating the Intensity of radiation hitting your eye}
+\NormalTok{Intensity_pupil =}\StringTok{ }\NormalTok{time }\OperatorTok{*}\StringTok{ }\NormalTok{pupil_area[}\DecValTok{5}\NormalTok{] }\CommentTok{#Units - W}
+
+\CommentTok{#Calculating the photon energy of the wavelengths that we measured}
+
+\NormalTok{e_meas =}\StringTok{ }\NormalTok{(h}\OperatorTok{*}\NormalTok{c)}\OperatorTok{/}\NormalTok{(wavelength}\OperatorTok{*}\FloatTok{1e-9}\NormalTok{) }\CommentTok{#Units - J}
+
+\CommentTok{#Now to calculate the number of photons that are making it to our eyes}
+
+\NormalTok{Photons_reach_eye_measured =}\StringTok{ }\NormalTok{Intensity_pupil}\OperatorTok{/}\NormalTok{e_meas}\CommentTok{#Units - Photons/s}
+
+\CommentTok{#If we sum up all of the photons from every wavelength, we see about how many photons per second are hitting our eyes}
+
+\NormalTok{Total_Photons =}\StringTok{ }\KeywordTok{sum}\NormalTok{(Photons_reach_eye_measured)}\CommentTok{#Units - Photons/s}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"Total Photons Reaching Our Eyes With Our Measured Data:"}\NormalTok{, Total_Photons,}\StringTok{" Photons/s"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Total Photons Reaching Our Eyes With Our Measured Data: 3.215567e+16  Photons/s
+\end{verbatim}
+
+
+\end{document}
