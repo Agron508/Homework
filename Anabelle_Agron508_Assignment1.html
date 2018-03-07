@@ -138,6 +138,7 @@ PPFD(500) </code></pre>
 </div>
 <div id="plancks-equation" class="section level3">
 <h3>Planck’s equation</h3>
+<p>Planck’s law describes the spectral density of electromagnetic radiation emitted by a black body in thermal equilibrium at a given temperature T</p>
 <pre class="r"><code>h&lt;-6.626*10^-34 # Planck's constant (J*s)
 c&lt;-2.997925*10^8 # speed of light (m/s)  or 10^17 nm/s
 k&lt;-1.381*10^-23 # Boltzmann's constant (J/K)
@@ -310,7 +311,7 @@ time&lt;-as.numeric.factor(time)</code></pre>
 <p>St = total incident solar radiation during growing season of which 48.7% is photosynthetically active (MJ/m2) Ei = light interception efficiency (between 50-75%) Ec = energy conversion efficiency Ep = partitioning efficiency or harvest index (here ignored) Yp = yield potential (MJ/m2) Yp_bis = yield potential in kg/m2 S_ec = seed energy content (MJ/kg) S_ec = leaf energy content</p>
 <pre class="r"><code>St=2000
 Ei=0.6 
-Ec = 0.06
+Ec = 0.06 # at 35°C
 Yp = St*0.478*Ei*Ec
 
 S_ec = 19
