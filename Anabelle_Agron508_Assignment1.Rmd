@@ -29,7 +29,7 @@ PPFD(500)
 
 ### Planck's equation 
 
-
+Planck's law describes the spectral density of electromagnetic radiation emitted by a black body in thermal equilibrium at a given temperature T
 ```{r}
 h<-6.626*10^-34 # Planck's constant (J*s)
 c<-2.997925*10^8 # speed of light (m/s)  or 10^17 nm/s
@@ -104,7 +104,7 @@ numberphotons<-function(lambda) {
 
 
 ### example CO2 - O2
-####Purpose:calculate CO2/O2 ratio in plant
+#### Purpose:calculate CO2/O2 ratio in plant
 ```{r}
 
 #pick one (this is from Zhu's paper Fig.3)
