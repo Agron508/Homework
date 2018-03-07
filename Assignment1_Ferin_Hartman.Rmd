@@ -127,7 +127,7 @@ obs_I_integ = sum(irradiance_data)*diff(band_data)[1]
 cat("Observed value of total power: ", obs_I_integ, "W/m^2")
 ```
 
-If we were to calculate the total power for the entire band of wavelenghts we would get:
+If we were to calculate the total power for the entire band of wavelengths we would get:
 ```{r}
 T2 = 6000
 lambda2 = seq(3.4e-7,8.05e-7, by=1e-10)
@@ -238,7 +238,7 @@ Total_Photons = sum(Photons_reach_eye_measured)#Units - Photons/s
 cat("Total Photons Reaching Our Eyes With Our Measured Data:", Total_Photons," Photons/s")
 
 ```
-
+###Some comments on the assumptions made here: We assumed that all of the incident radiation makes it into our eyes. We are also assuming that the minimum intensity of radiation needed for sight is the same for all wavelengths. 
 
 
 
