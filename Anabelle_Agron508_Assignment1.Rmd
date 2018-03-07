@@ -233,7 +233,7 @@ S_ec = leaf energy content
 ```{r}
 St=2000
 Ei=0.6 
-Ec = 0.025
+Ec = 0.06
 Yp = St*0.478*Ei*Ec
 
 S_ec = 19
