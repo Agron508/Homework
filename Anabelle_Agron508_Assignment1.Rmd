@@ -145,7 +145,7 @@ ratio3
   R=8.31445  #molar gas constant, M2kgs-2K-1mol-1
   Temp.f = function(c,Ha){
     parameter = function(Tk){#Tk is leaf temeprature
-      exp(c-Ha/(R*Tk))
+      exp(c-Ha*10^3/(R*(Tk+273.15)))
     }
     parameter
   }
@@ -156,19 +156,30 @@ ratio3
   Vo.max = Temp.f(22.98,60.11)
   Ko = Temp.f(20.3,36.38)#MMOL
   Kc =  Temp.f(38.05,79.43)#umol
-  tau = Vc.max(temp)*Ko(temp)/(Kc(temp)*Vo.max(temp))
   
 #efficiency
 #this is from Zhu's paper
+max.conversion=0.487 #page 154
 efficiency = function (CO2,O2,temp){
   tau = Vc.max(temp)*Ko(temp)*1000/(Kc(temp)*Vo.max(temp))
   phi = O2/(CO2*tau) #this is the ratio of RuBP oxygenation to carboxylation
-  dpr = 1-3*(1-0.5*phi)/(3+3.5*phi)  #maximal energy conversion efficiency
-  dpr
+  dpr = 1-3*(1-0.5*phi)/(3+3.5*phi)  #decrease in  caused by photorespiration
+  conversion=max.conversion-dpr#energy conversion efficiency
+  list(dpr,conversion)
 }
-leaf.temp=c(1:25)
-effici = efficiency(0.0004,0.21,leaf.temp)
-plot(leaf.temp,effici,type="l")
+
+#temperature range
+leaf.temp=c(5:40)
+CO2=0.00038
+O2=0.21
+effici = efficiency(CO2,O2,leaf.temp)
+dpr=effici[[1]]
+conversion=effici[[2]]
+
+#plot
+plot(leaf.temp,dpr,type="l",xlab="Temperature",ylab="Decrease by photorespiration")
+plot(leaf.temp,conversion,type="l",xlab="Temperature",ylab="energy conversion efficiency")
+
 ```
 
 
