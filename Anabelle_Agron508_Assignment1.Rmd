@@ -236,9 +236,9 @@ Ec = 0.06 # at 35°C
 Yp = St*0.478*Ei*Ec
 
 S_ec = 19
-S_ec = 22.5
+S_el = 22.5
 
-Yp_bis_leaf=Yp/S_ec
+Yp_bis_leaf=Yp/S_el
 Yp_bis_seed=Yp/S_ec
 
 print(Yp_bis_seed)
