@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-### equation to get PPFD
+### 1.Equation to get PPFD
 
 PPFD is photosynthetic photon flux density in mol/m2/s
 Irradiance is the radiant flux received by a surface per unit of area in W/m2
@@ -27,7 +27,7 @@ PPFD(500)
 # if irr = 500 W/m2, PPFD is equal to 2100 micromol/m2/s
 ```
 
-### Planck's equation 
+### 2.Planck's equation 
 
 Planck's law describes the spectral density of electromagnetic radiation emitted by a black body in thermal equilibrium at a given temperature T
 ```{r}
@@ -43,7 +43,7 @@ planck<-function(wl,temp){  # wl = wavelength (m), T = temperature (K)
 }
 ```
 
-###  Planck equation graph
+###  3.Planck equation graph
 
 ```{r}
 h=6.62606896e-34
@@ -66,8 +66,8 @@ plot(1e6*lambda,1e-6*1e-6*y2, xlim=c(0.0,50.0), ylim=c(0.0,3*1e-5), xlab='Wavele
 ```
 
 
-### Active example Dark vision 
-##### description step by step for one value of wavelength 
+### 4.Active example Dark vision 
+##### 4.1 Description step by step for one value of wavelength 
 ```{r}
 
 lambda<-0.505 # micro m (or 505 nm)
@@ -86,7 +86,7 @@ number_photons<-intensity/result
 ```
 
 
-#### function for any value of wavelenght (lambda in micro m)
+#### 4.2 Function for any value of wavelenght (lambda in micro m)
 ```{r}
 
 numberphotons<-function(lambda) {
@@ -103,30 +103,35 @@ numberphotons<-function(lambda) {
 
 
 
-### example CO2 - O2
-#### Purpose:calculate CO2/O2 ratio in plant
+### 5.Calculate CO2/O2 ratio in plant
 ```{r}
 
 #pick one (this is from Zhu's paper Fig.3)
- #present
- CO2<-0.0004 
- #past  #220ppm
- CO2<-0.00022
- #future   #700ppm
- CO2<-0.0007
+     #present
+     CO2<-0.0004 
+     #past  #220ppm,parts-per-million
+     CO2<-0.00022
+     #future   #700ppm
+     CO2<-0.0007
+ 
+O2<-0.21  
+cat("CO2 concentration:",CO2,"%","\n)
+cat("O2 concentration:",O2,"%","\n)
 
 # step 1:get into plant (physically diffusion)
-O2<-0.21  # keep this value
 ratio1<-O2/CO2
+cat("The O2/CO2 ratio of physically diffusion:",ratio1,"%","\n)
 
 # step 2:water dissolving
 alpha<-25  #This is the CO2/O2 Solubility ratio at 25 degree
 ratio2<-ratio1*1/alpha  
+cat("The O2/CO2 ratio of water dissolving:",ratio2,"%","\n)
 
 # step 3:
 tau<-75  #This is the CO2/O2 Specificity ratio 
 ratio3<-tau/ratio2
-ratio3
+cat("The O2/CO2 ratio of water dissolving:",ratio3,"%","\n)
+
 
 #results:
 #past     ratio3:1.964286
@@ -135,7 +140,7 @@ ratio3
 
 
 
-### relationship of efficiency with temperature (2.18.2018)
+### 6.relationship of efficiency with temperature 
 #### based on paper: Improved temperature response functions for models of Rubisco-limited photosynthesis
 
 ```{r}
