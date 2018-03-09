@@ -18,14 +18,30 @@ Energy content in the PAR waveband = 2.35*10^5 J/mol
 
 ```{r}
 # irr = irradiance
-PPFD<-function(irr){
-    result<-irr*1/(2.35*10^5)
-return(result)
+PPFD<-function(irr){   # here the function called PPFD used the irradiance "irr" as an input
+    result<-irr*1/(2.35*10^5)  # result represents the output (that is the PPFD)
+return(result) # you need to use return to be sure the result will be printed in your R console
 }
 
-PPFD(500) 
+PPFD(500)  # as PPFD function was created now you can put any input (irradiance)
+
 # if irr = 500 W/m2, PPFD is equal to 2100 micromol/m2/s
 ```
+### 1.bis. PPFD graph
+
+
+```{r}
+values<-seq(0,1000,by=100) 
+# values is a vector including value of irradiance fromm 0 to 1000 with a increment of 100
+
+ggplot(data=NULL,aes(x=values,y=PPFD(values)))+geom_point() +
+  ylab("PPFD (mol/m2/s)") +
+  xlab("Irradiance (W/m2)") +
+  ggtitle("PPFD as a function of irradiance")
+```
+
+
+
 
 ### 2.Planck's equation 
 
@@ -89,7 +105,7 @@ number_photons<-intensity/result
 #### 4.2 Function for any value of wavelenght (lambda in micro m)
 ```{r}
 
-numberphotons<-function(lambda) {
+numberphotons<-function(lambda) {  # see PPFD function comments to understand how work the function. Input = lambda
   
   intensity<-1.13 *10^-15 
   hc<-1.24 
@@ -100,7 +116,18 @@ numberphotons<-function(lambda) {
 }
 ```
 
+#### 4.3 Graph giving the number of photons for any value of wavelenght 
 
+```{r}
+lambda_values<-seq(400,800,by=50)
+ggplot(data=NULL,aes(x=lambda_values,y=numberphotons(lambda_values))) + ### ggplot use a dataset (here null because I used a vector of values, aes is to define x and y)
+  geom_point() + # I used geom_point because I want points in the graph, for example if you want a line you should use geom_line
+  ylab("number of photons") + # specify y axis legend
+  xlab("wavelength (nm)") + # specify x axis legend
+  ggtitle("Dark vision: Number of photons as a function of wavelenght") # specify the title
+
+### ggplot use a dataset (here null because I used a vector of values, aes is to define x and y)
+```
 
 
 ### 5.Calculate CO2/O2 ratio in plant
@@ -115,22 +142,22 @@ numberphotons<-function(lambda) {
      CO2<-0.0007
  
 O2<-0.21  
-cat("CO2 concentration:",CO2,"%","\n)
-cat("O2 concentration:",O2,"%","\n)
+cat("CO2 concentration:",CO2,"%","\n")
+cat("O2 concentration:",O2,"%","\n")
 
 # step 1:get into plant (physically diffusion)
 ratio1<-O2/CO2
-cat("The O2/CO2 ratio of physically diffusion:",ratio1,"%","\n)
+cat("The O2/CO2 ratio of physically diffusion:",ratio1,"%","\n")
 
 # step 2:water dissolving
 alpha<-25  #This is the CO2/O2 Solubility ratio at 25 degree
 ratio2<-ratio1*1/alpha  
-cat("The O2/CO2 ratio of water dissolving:",ratio2,"%","\n)
+cat("The O2/CO2 ratio of water dissolving:",ratio2,"%","\n")
 
 # step 3:
 tau<-75  #This is the CO2/O2 Specificity ratio 
 ratio3<-tau/ratio2
-cat("The O2/CO2 ratio of water dissolving:",ratio3,"%","\n)
+cat("The O2/CO2 ratio of water dissolving:",ratio3,"%","\n")
 
 
 #results:
@@ -211,28 +238,30 @@ Plot the Irradiance as a function of wavelenght (nm)
 time<-data[,84]# here I just pick a column randomly
 class(time)
 # time has to be converted into numeric 
-as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
+as.numeric.factor <- function(x) {as.numeric(levels(x))[x]} # function to convert all the level of the factor into numeric without losing information
 time<-as.numeric.factor(time)
-ggplot(data=data,aes(x=waveL,y=time))+
+ggplot(data=data,aes(x=waveL,y=time))+  # see part 4.3 to find some comments about ggplot
   geom_line() +
-  scale_x_continuous(breaks = round(seq(min(data$waveL), max(data$waveL), by = 100),1)) +
+  scale_x_continuous(breaks = round(seq(min(data$waveL), max(data$waveL), by = 100),1)) + 
   scale_y_continuous(breaks = round(seq(min(time), max(time), by = 0.005),1)) +
   xlab("wavelength (nm)") +
-  ylab("Irradiance")
+  ylab(expression(paste("Spectral Irradiance (W/m2/",mu,"m)")))
 ```
 
 
 
-### Yield potential (kg/m2)
+### Calculate the biomass (carbon)
 
 St = total incident solar radiation during growing season of which 48.7% is photosynthetically active (MJ/m2)
 Ei = light interception efficiency (between 50-75%)
 Ec = energy conversion efficiency
 Ep = partitioning efficiency or harvest index (here ignored)
 Yp = yield potential (MJ/m2)
-Yp_bis = yield potential in kg/m2
-S_ec = seed energy content (MJ/kg) 
-S_ec = leaf energy content
+
+Seed_ec = seed energy content (MJ/kg) = 22.2 in average
+Leaf_ec = leaf energy content (MJ/kg) = 19 in average
+Stem_ec = stem energy content (MJ/kg) = 17 in average
+Total_ec = average energy content for the plant = (22.2+17+19)/3=19.4 (MJ/kg)
 
 ```{r}
 St=2000
@@ -240,13 +269,11 @@ Ei=0.6
 Ec = 0.06 # at 35°C
 Yp = St*0.478*Ei*Ec
 
-S_ec = 19
-S_el = 22.5
+Total_ec=19.4 
 
-Yp_bis_leaf=Yp/S_el
-Yp_bis_seed=Yp/S_ec
+biomass=Yp/Total_ec # biomass (carbon) of the whole plant 
 
-print(Yp_bis_seed)
-print(Yp_bis_leaf)
+# the biomass is equal to 1.77 kg/m2
+
 ```
 
