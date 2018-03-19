@@ -250,7 +250,7 @@ cat("The O2/CO2 ratio of water dissolving:",ratio3,"%","\n")
 ```
 
 
-### Device - Read data
+### 7.Device - Read data
 
 ```{r}
 library(readr)
@@ -286,7 +286,7 @@ ggplot(data=data,aes(x=waveL,y=time))+  # see part 4.3 to find some comments abo
 
 
 
-### Calculate the biomass (carbon)
+### 8.Calculate the biomass (carbon)
 
 St = total incident solar radiation during growing season of which 48.7% is photosynthetically active (MJ/m2)
 Ei = light interception efficiency (between 50-75%)
@@ -315,7 +315,7 @@ biomass=Yp/Total_ec # biomass (carbon) of the whole plant
 
 
 
-###3D plot of  biomass
+#### 8.1 3D plot of  biomass
 
 ```{r}
 #x axis
