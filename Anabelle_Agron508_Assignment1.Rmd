@@ -340,4 +340,4 @@ for (i in 1:5){
 persp(ei, ec, z, phi = 45, theta = 45,
       xlab = "Ei", ylab = "Ec",
       main = "Biomass (carbon) of the whole plant")
- ```
+```
