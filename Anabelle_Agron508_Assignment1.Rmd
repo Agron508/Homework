@@ -341,3 +341,48 @@ persp(ei, ec, z, phi = 45, theta = 45,
       xlab = "Ei", ylab = "Ec",
       main = "Biomass (carbon) of the whole plant")
 ```
+
+
+```{r}
+
+x<-c(0.5,0.6,0.7,0.75) # x = Ei
+y<-c(0.05,0.1,0.2,0.3) # y = Ec
+St<-2000
+data<-expand.grid(x,y) # gives all the combinations of x and y
+colnames(data)<-c("x","y")
+
+data$z<-St*0.478*data$x*data$y  # biomass in MJ/m2
+
+install.packages("plot3D")
+library("plot3D")
+
+scatter3D(data$x, data$y, data$z, phi = 0, bty = "g",
+          pch = 20, cex = 1.8, 
+          ticktype = "detailed",
+          xlab = "light interception efficiency",
+          ylab ="energy conversion efficiency", 
+          zlab = "yield potential (MJ/m2)",
+          main="Yield potential, Ei and Ec")
+
+```
+
+
+
+```{r}
+library(plotly)
+
+x<-c(0.5,0.6,0.7,0.75) # x = Ei
+y<-c(0.05,0.1,0.2,0.3) # y = Ec
+St<-2000
+data<-expand.grid(x,y) # gives all the combinations of x and y
+colnames(data)<-c("x","y")
+data$z<-St*0.478*data$x*data$y  # biomass in MJ/m2
+
+p <- plot_ly(data, x = ~x, y = ~y, z = ~z, color = ~z) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = 'Ei'),
+                      yaxis = list(title = 'Ec'),
+                      zaxis = list(title = 'Yp')))
+p
+```
+
