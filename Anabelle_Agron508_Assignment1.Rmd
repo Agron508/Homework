@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
 ```
 
 
@@ -315,32 +316,8 @@ biomass=Yp/Total_ec # biomass (carbon) of the whole plant
 
 
 
-#### 8.1 3D plot of  biomass
+#### 8.1 3D plot of  biomass (MJ/m2)
 
-```{r}
-#x axis
-ei = c(0.4,0.5,0.6,0.7,0.8)  
-#y axis
-ec = c(0.04,0.05,0.06,0.07,0.08)
-#z axis
-#biomass
-St=2000
-Total_ec=19.4
-
-z=matrix(NA,nrow=5,ncol=5)
-for (i in 1:5){
-  for (j in 1:5){
-    Ei = ei[i]
-    Ec= ec [j]
-    z[i,j]=St*0.478*Ei*Ec/Total_ec
-  }
-}
-
-#This function draws perspective plots of a surface over the x--y plane.
-persp(ei, ec, z, phi = 45, theta = 45,
-      xlab = "Ei", ylab = "Ec",
-      main = "Biomass (carbon) of the whole plant")
-```
 
 
 ```{r}
@@ -353,7 +330,6 @@ colnames(data)<-c("x","y")
 
 data$z<-St*0.478*data$x*data$y  # biomass in MJ/m2
 
-install.packages("plot3D")
 library("plot3D")
 
 scatter3D(data$x, data$y, data$z, phi = 0, bty = "g",
@@ -362,11 +338,11 @@ scatter3D(data$x, data$y, data$z, phi = 0, bty = "g",
           xlab = "light interception efficiency",
           ylab ="energy conversion efficiency", 
           zlab = "yield potential (MJ/m2)",
-          main="Yield potential, Ei and Ec")
+          main="Yield potential (MJ/m2), Ei and Ec")
 
 ```
 
-
+#### 8.2 Interactive 3D plot of biomass (MJ/m2)
 
 ```{r}
 library(plotly)
@@ -384,5 +360,27 @@ p <- plot_ly(data, x = ~x, y = ~y, z = ~z, color = ~z) %>%
                       yaxis = list(title = 'Ec'),
                       zaxis = list(title = 'Yp')))
 p
+```
+
+
+
+### 9. Carbon assimilation model
+
+```{r}
+## need to find a way to calculate C
+
+cass <- function(result){
+  
+  I <- 0.035   ## with the assump. that r = 3 and O = .21 equation (3)
+  vc <- 98    ## constant taken form Fig 2 explaination
+  C <- 270    ## micromol per mol
+  Rd <- result  
+  
+  ## A = (1-I/C)vc-rd
+  
+  A <- (1 -(I/C))*vc -Rd
+  
+  return(A)
+}
 ```
 
