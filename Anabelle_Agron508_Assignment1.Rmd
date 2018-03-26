@@ -371,8 +371,8 @@ p
 
 cass <- function(result){
   
-  I <- 0.035   ## with the assump. that r = 3 and O = .21 equation (3)
-  vc <- 98    ## constant taken form Fig 2 explaination
+  I <- 0.035   ## with the assump. that r = 3 and O = .21 equation (3) Irradiance
+  vc <- 98    ## constant taken form Fig 2 explaination  it is a constant
   C <- 270    ## micromol per mol
   Rd <- result  
   
