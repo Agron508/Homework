@@ -20,17 +20,17 @@ h=6.62606896e-34
 c=2.99792458e8 
 # Boltzman constant [J/K]
 k=1.3806504e-23 
-
 # temperature used for sun in example [K]
 T = 5800
 ```
 
 To calculate the following equations of a blackbody with a different waveband, change sequence range for lambda!
+This gives us the range from 600-605nm. 
 ```{r}
 # the following lambda will not be used, this is for the entire spectrum of visible light
 #lambda = seq(3.4e-7,8.05e-7, by=1e-10)
 
-# this lambda sequence is for the band of wavelengths used in the example problem [m]
+# this lambda sequence is for the band of wavelengths used in the example problem [currently in meters]
 lambda = seq(6.0e-7,6.05e-7, by=1e-10)
 ```
 
@@ -42,7 +42,7 @@ $y = \frac{h c}{\lambda k T}$
 ```{r}
 # Equation 1
 y = (h*c)/(lambda*k*T)
-plot(lambda,y,xlab='Wavelength (m)',ylab='Plancks Exponential',main='Part #1: Equation 1')
+plot(lambda,y,xlab='Wavelength (m)',ylab='Plancks Exponential',main='Exponential from Plancks Equation')
 ```
 
 Equation #2: Spectral Emittance of the sun (I; W/m^2/m)
@@ -50,15 +50,25 @@ $I = \frac{2 \pi h c^2}{\lambda^5 e^y - 1}$
 
 ```{r}
 I=((2*pi)*(h)*(c**2)/((lambda**5)*(exp(y)-1)))
-plot(lambda,I,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)',main='Part #1: Equation 2')
+plot(lambda,I,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)',main='Spectral Emittance over specified wavelenghts')
 ```
 
 Equation #3: This plot is the intensity (MW/m^2) for the given spectral emittance (W/m^2/m) values calculated in equation 2.
 $I(\lambda) = I[max(\lambda)-min(\lambda)]*10^{-6}$
 
+The solid grey line is the median value for intensity. 
 ```{r}
 Ilambda = (I*(max(lambda)-min(lambda)))*1e-6
-plot(I,Ilambda,xlab='Spectral Emittance (W/m^2/m)',ylab='Intensity (MW/m^2)',main='Part #1: Equation 3')
+plot(I,Ilambda,xlab='Spectral Emittance (W/m^2/m)',ylab='Intensity (MW/m^2)',main='Intensity for range of spectral emittance')
+abline(h=median(Ilambda))
+```
+
+The next thing we are going to plot is how intensity changes throughout the wavelength band. The solid grey line is the median value for intensity. 
+
+
+```{r}
+plot(lambda,Ilambda,xlab='Wavelenght (m)',ylab='Intensity (MW/m^2)',main='Intensity for range of wavelengths')
+abline(h=median(Ilambda))
 ```
 
 ### Part 2: Power within a waveband
@@ -69,7 +79,7 @@ The equations in part 1 use [m] for the wavelengths. We need to convert these to
 ```{r}
 lambda_nm=lambda*1e+9
 I_new = I/1e+9
-plot(lambda_nm,I_new,xlab='Wavelength (nm)',ylab='Spectral Emittance (W/m^2/nm)',main='Part #2: Equation 1')
+plot(lambda_nm,I_new,xlab='Wavelength (nm)',ylab='Spectral Emittance (W/m^2/nm)',main='Spectral emittance over range of wavelenths (in nm)')
 ```
 
 Now we need to use the values collected during class. The following chunk of code is from Anabelle:
@@ -99,6 +109,7 @@ ggplot(data=data,aes(x=waveL,y=time))+
   geom_line() +
   scale_x_continuous(breaks = round(seq(min(data$waveL), max(data$waveL), by = 100),1)) +
   scale_y_continuous(breaks = round(seq(min(time), max(time), by = 0.005),1)) +
+  ggtitle("Spectral irradiance from class") +
   xlab("wavelength (nm)") +
   ylab(expression(paste("Spectral Irradiance (W/m2/",mu,"m)")))
 ```
@@ -106,9 +117,9 @@ ggplot(data=data,aes(x=waveL,y=time))+
 
 First we need to convert the spectral irradiance from W/m2/micrometer to W/m2/nm:
 ```{r}
-irradiance = time*1e+3
+irradiance = time/1e+3
 wavelength = data$waveL
-plot(wavelength,irradiance,type="o",xlab='Wavelength (nm)',ylab='Spectral Irradiance (W/m^2/nm)',main='Part #2: Collected Data')
+plot(wavelength,irradiance,type="o",xlab='Wavelength (nm)',ylab='Spectral Irradiance (W/m^2/nm)',main='Spectral irradiance of data collected in class')
 sum(irradiance)*diff(wavelength)[1]
 
 ```
@@ -117,8 +128,8 @@ We only want to use the wavelength band  of 600-605nm to compare to the black bo
 ```{r}
 irradiance_data = irradiance[261:266]
 band_data = data$waveL[261:266]
-plot(band_data,irradiance_data,type="o",xlab='Wavelength (nm)',ylab='Spectral Irradiance (W/m^2/nm)',main='Part #2: Collected Data')
-plot(lambda_nm,I_new,type="o",xlab='Wavelength (nm)',ylab='Spectral Emittance (W/m^2/nm)',main='Part #2: Equation 1')
+plot(band_data,irradiance_data,type="o",xlab='Wavelength (nm)',ylab='Spectral Irradiance (W/m^2/nm)',main='Spectral Irradiance from Collected Data')
+plot(lambda_nm,I_new,type="o",xlab='Wavelength (nm)',ylab='Spectral Emittance (W/m^2/nm)',main='Spectral Emittance from Textbook')
 ```
 
 Lastly, we need to integrate the area under the curve for both the blackbody and observed values:
@@ -139,7 +150,7 @@ T2 = 6000
 lambda2 = seq(3.4e-7,8.05e-7, by=1e-10)
 y2 = (h*c)/(lambda2*k*T2)
 I2=((2*pi)*(h)*(c**2)/((lambda2**5)*(exp(y2)-1)))
-plot(lambda2,I2,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)',main='Part #1: Equation 2')
+plot(lambda2,I2,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)',main='Spectral emmittance for visible range')
 tot = sum(I2)*diff(lambda2)[1]
 cat("Observed value of total power: ", tot, "W/m^2")
 ```
@@ -148,13 +159,11 @@ cat("Observed value of total power: ", tot, "W/m^2")
 First, we define the constants that will be used in these calculations:
 ```{r}
 #Intensity of radiation reaching the eye in order for the human eye to percieve light.
-I = 4.0e-11 # Units - W/m^2
+I_eye = 4.0e-11 # Units - W/m^2
 
-#Plancks Constant 
-h = 6.63e-34 # Units - J*s
-
-#Speed of light in a vacuum
-c = 3.0e8 # Units - m/s
+#The following are called in the beginning of the assingment:
+#Plancks Constant: h = 6.63e-34 # Units - J*s
+#Speed of light in a vacuum: c = 3.0e8 # Units - m/s
 ```
 Secondly, we calculate the area of the pupil:
 (According to NCBI the diameter of a human pupil ranges from 2 mm to 8mm)
@@ -178,7 +187,7 @@ Third, we calculate the power reaching the eye:
 ```{r}
 
 #Power reaching the eye
-Power_reach_eye = I*pupil_area # Units - W
+Power_reach_eye = I_eye*pupil_area # Units - W
 ```
 Fourth, we calculate the energy of a photon for wavelengths in the visible spectrum:
 
@@ -209,7 +218,6 @@ for(i in 1:401){
 Sixth, we plot the results of this experiment:
 
 ```{r}
-library(ggplot2)
 #Set data up in a frame to plot
 data_pup = data.frame(x = lam_pupil,y1 = Photons_reach_eye[,1], y2 = Photons_reach_eye[,2], y3 = Photons_reach_eye[,3], y4 = Photons_reach_eye[,4], y5 = Photons_reach_eye[,5], y6 = Photons_reach_eye[,6], y7 = Photons_reach_eye[,7])
 
@@ -228,7 +236,6 @@ PPFD_eye = Photons_reach_eye /(6.02e23) * 1e6 / pupil_area
 
 #Now let's plot the results of this, like we plotted the others
 
-library(ggplot2)
 #Set data up in a frame to plot
 data_pup = data.frame(x = lam_pupil,y1 = PPFD_eye[,1], y2 = PPFD_eye[,2], y3 = PPFD_eye[,3], y4 = PPFD_eye[,4], y5 = PPFD_eye[,5], y6 = PPFD_eye[,6], y7 = Photons_reach_eye[,7])
 
@@ -265,16 +272,7 @@ cat("Total Photons Reaching Our Eyes With Our Measured Data:", Total_Photons," P
 ```
 ###Some comments on the assumptions made here: We assumed that all of the incident radiation makes it into our eyes. We are also assuming that the minimum intensity of radiation needed for sight is the same for all wavelengths. 
 
-y = (h*c)/(lambda*k*T)
-$y = \frac{h c}{\lambda k T}$
 
-$\pi r^2$
-
-\[
-e^{i \pi} = -1
-\]
-
-$\frac{a+b}{b} = 1 + \frac{a}{b}$
 
 
 
