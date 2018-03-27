@@ -11,7 +11,7 @@ library(ggplot2)
 ```
 
 
-### 1.Equation to get PPFD
+### 1.Equation to get PPFD in the PAR waveband
 
 PPFD is photosynthetic photon flux density in mol/m2/s
 Irradiance is the radiant flux received by a surface per unit of area in W/m2
@@ -32,13 +32,13 @@ PPFD(500)  # as PPFD function was created now you can put any input (irradiance)
 
 
 ```{r}
-values<-seq(0,1000,by=100) 
+values<-seq(400,700,by=50) 
 # values is a vector including value of irradiance fromm 0 to 1000 with a increment of 100
 
 ggplot(data=NULL,aes(x=values,y=PPFD(values)))+geom_point() +
   ylab("PPFD (mol/m2/s)") +
   xlab("Irradiance (W/m2)") +
-  ggtitle("PPFD as a function of irradiance")
+  ggtitle("PPFD as a function of irradiance in the PAR waveband")
 ```
 
 
