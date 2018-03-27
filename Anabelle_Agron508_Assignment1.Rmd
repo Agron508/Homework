@@ -369,12 +369,12 @@ p
 ```{r}
 ## need to find a way to calculate C
 
-cass <- function(result){
+cass <- function(dpr){
   
   I <- 0.035   ## with the assump. that r = 3 and O = .21 equation (3) Irradiance
-  vc <- 98    ## constant taken form Fig 2 explaination  it is a constant
-  C <- 270    ## micromol per mol
-  Rd <- result  
+  vc <- 98     ## constant taken form Fig 2 explaination  it is a constant
+  C <- 270     ## micromol per mol
+  Rd <-  dpr
   
   ## A = (1-I/C)vc-rd
   
@@ -382,5 +382,8 @@ cass <- function(result){
   
   return(A)
 }
+
+cass(dpr = .13)
+
 ```
 
