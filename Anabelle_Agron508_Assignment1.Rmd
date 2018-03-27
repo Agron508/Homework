@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
+library(tidyr)
 ```
 
 
@@ -91,7 +92,8 @@ lambda<-0.505 # micro m (or 505 nm)
 # area pupil = 2.83*10^-5 m2
 # 4.00*10^-11 W/m2 is the intensity for dark- adapted vision for human
 # intensity per area = 4.00*10^-11 * 2.83*10^-5 = 1.13 *10^-15 J/s (reminder 1 watt = 1 J/s)
-intensity<-1.13 *10^-15 
+pupil_area<-2.83*10^-5
+intensity<-4.00*10^-11 * pupil_area
 # energy photon = 3.94*10^-19 J
 # E = hc/lambda (eV)
 hc<-1.24 *10^-6 # eV/ m
@@ -105,10 +107,22 @@ number_photons<-intensity/result
 
 #### 4.2 Function for any value of wavelenght (lambda in micro m)
 ```{r}
+#Diameter of a human pupil
+d = seq(2,8,by = 1) # Units - mm
 
-numberphotons<-function(lambda) {  # see PPFD function comments to understand how work the function. Input = lambda
+#Convert the diameter to meters
+d = d*1e-3 # Units - m 
+
+#Calculate the pupil area
+pupil_area = pi*((d/2)^2) # Units - m^2
+```
+
+
+```{r}
+
+numberphotons<-function(lambda,pupil_area) {  # see PPFD function comments to understand how work the function. Input = lambda
   
-  intensity<-1.13 *10^-15 
+  intensity<-4.00*10^-11 * pupil_area
   hc<-1.24 
   E<-hc/lambda 
   denom<-1.602 *10^-19*E  
@@ -117,17 +131,37 @@ numberphotons<-function(lambda) {  # see PPFD function comments to understand ho
 }
 ```
 
-#### 4.3 Graph giving the number of photons for any value of wavelenght 
+#### 4.3 Graph giving the number of photons for any value of wavelenght and pupil area
 
 ```{r}
-lambda_values<-seq(400,800,by=50)
-ggplot(data=NULL,aes(x=lambda_values,y=numberphotons(lambda_values))) + ### ggplot use a dataset (here null because I used a vector of values, aes is to define x and y)
-  geom_point() + # I used geom_point because I want points in the graph, for example if you want a line you should use geom_line
-  ylab("number of photons") + # specify y axis legend
-  xlab("wavelength (nm)") + # specify x axis legend
-  ggtitle("Dark vision: Number of photons as a function of wavelenght") # specify the title
-
+## below old version for one value of pupil area
+#lambda_values<-seq(400,800,by=50)
+#ggplot(data=NULL,aes(x=lambda_values,y=numberphotons(lambda_values))) + ### ggplot use a dataset (here null because I used a vector of values, aes is to define x and y)
+#  geom_point() + # I used geom_point because I want points in the graph, for example if you want a line you should use geom_line
+#  ylab("number of photons") + # specify y axis legend
+#  xlab("wavelength (nm)") + # specify x axis legend
+#  ggtitle("Dark vision: Number of photons as a function of wavelenght") # specify the title
 ### ggplot use a dataset (here null because I used a vector of values, aes is to define x and y)
+
+
+d = seq(2,8,by = 1) # Units - mm
+d = d*1e-3 # Units - m 
+pupil_area = pi*((d/2)^2) # Units - m^2
+
+lambda<-seq(400,800,by=50)
+data<-expand.grid(lambda,pupil_area) # gives all the combinations of lambda and pupil areas
+library(dplyr)
+
+data<-data %>% mutate(z=numberphotons(Var1,Var2))
+data %>% ggplot(aes(x=Var1,y=z,colour=as.factor(round(Var2,6)))) + geom_point() +
+  ylab("number of photons") + # specify y axis legend
+  xlab("wavelength (nm)") + # specify x axis legend 
+  ggtitle("Number of photons as a function of wavelenght for different pupil area") 
+
+ # guides(fill=guide_legend(title="Pupil area (m2)"))
+
+
+
 ```
 
 
@@ -251,8 +285,9 @@ cat("The O2/CO2 ratio of water dissolving:",ratio3,"%","\n")
 ```
 
 
-### 7.Device - Read data
+### 7.Device - Read data collected in class
 
+Here we used the data collected in class from the spectral radiometer. 
 ```{r}
 library(readr)
 #tab<-read_csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
@@ -269,7 +304,8 @@ colnames(data)[1]<-"waveL"
 data$waveL<-as.numeric(as.vector(data$waveL)) # to get a x_continous scale, data need to be numeric not factor
 ```
 
-Plot the Irradiance as a function of wavelenght (nm)
+Plot the spectral irradiance as a function of wavelenght (nm)
+Spectral irradiance is what is measured on Earth (varies due to Earth's atmosphere and its absorption in some wavelengths).
 
 ```{r}
 time<-data[,84]# here I just pick a column randomly
