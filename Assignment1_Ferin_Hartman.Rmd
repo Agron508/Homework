@@ -243,7 +243,12 @@ leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","
 cex = .5
 legend(pupil_area[1],Photons_reach_eye[7,6],leg.txt,cex = .5,lwd = 2, col = col_set)
 ```
-The equation to convert the number of photons to PPF is: $PPF = \frac{# Photons}{avogadro's # * 10^6}$
+
+The equation to convert the number of photons to PPF is: 
+
+$PPF = \frac{Number of Photons}{(Avogadros Number)10^6}$
+
+
 ```{r}
 #Lets convert these numbers into PPF to be able to compare them to what we know
 
