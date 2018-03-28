@@ -114,13 +114,14 @@ ggplot(data=data,aes(x=waveL,y=time))+
   scale_y_continuous(breaks = round(seq(min(time), max(time), by = 0.005),1)) +
   ggtitle("Spectral irradiance from class") +
   xlab("wavelength (nm)") +
-  ylab(expression(paste("Spectral Irradiance (W/m2/",mu,"m)")))
+  ylab(expression(paste("Spectral Irradiance (W/m2/nm)")))
 ```
 
 
-First we need to convert the spectral irradiance from W/m2/micrometer to W/m2/nm:
+Here we are taking the data from the data.frame and putting it in a form of array where we can use it in the plot function (instead of using ggplot2):
+
 ```{r}
-irradiance = time/1e+3
+irradiance = time
 wavelength = data$waveL
 plot(wavelength,irradiance,type="o",xlab='Wavelength (nm)',ylab='Spectral Irradiance (W/m^2/nm)',main='Spectral irradiance of data collected in class')
 sum(irradiance)*diff(wavelength)[1]
@@ -128,6 +129,7 @@ sum(irradiance)*diff(wavelength)[1]
 ```
 
 We only want to use the wavelength band  of 600-605nm to compare to the black body, which is shown in the following plot. 
+
 ```{r}
 irradiance_data = irradiance[261:266]
 band_data = data$waveL[261:266]
@@ -148,6 +150,7 @@ cat("Observed value of total power: ", obs_I_integ, "W/m^2")
 ```
 
 If we were to calculate the total power for the entire band of wavelengths we would get:
+
 ```{r}
 T2 = 6000
 lambda2 = seq(3.4e-7,8.05e-7, by=1e-10)
@@ -160,6 +163,7 @@ cat("Observed value of total power: ", tot, "W/m^2")
 ### Part 3: Example problem; Photons required for sight!
 
 First, we define the constants that will be used in these calculations:
+
 ```{r}
 #Intensity of radiation reaching the eye in order for the human eye to percieve light.
 I_eye = 4.0e-11 # Units - W/m^2
@@ -168,6 +172,7 @@ I_eye = 4.0e-11 # Units - W/m^2
 #Plancks Constant: h = 6.63e-34 # Units - J*s
 #Speed of light in a vacuum: c = 3.0e8 # Units - m/s
 ```
+
 Secondly, we calculate the area of the pupil:
 
 $A_{pupil} = \pi (\frac{d}{2})^2$
@@ -189,6 +194,7 @@ pupil_area = pi*((d/2)^2) # Units - m^2
 ```
 
 Third, we calculate the power reaching the eye:
+
 $Power Reached = Intensity * A_{pupil}$
 
 ```{r}
@@ -196,6 +202,7 @@ $Power Reached = Intensity * A_{pupil}$
 #Power reaching the eye
 Power_reach_eye = I_eye*pupil_area # Units - W
 ```
+
 Fourth, we calculate the energy of a photon for wavelengths in the visible spectrum:
 
 $e = \frac{hc}{\lambda_{pupil}}$
@@ -210,6 +217,7 @@ lam_pupil = array(c(455e-9,492e-9,577e-9,597e-9,622e-9,780e-9))
 e = (h*c)/lam_pupil #Units - J
 
 ```
+
 Fifth, we calculate the amount of photons reaching the eye:
 
 $Photons Reached = \frac{Power Reached}{e}$
@@ -229,6 +237,7 @@ for(i in 1:6){
   
 Photons_reach_eye = t(Photons_reach_eye)
 ```
+
 Sixth, we plot the results of this experiment:
 
 ```{r}
@@ -243,7 +252,12 @@ leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","
 cex = .5
 legend(pupil_area[1],Photons_reach_eye[7,6],leg.txt,cex = .5,lwd = 2, col = col_set)
 ```
-The equation to convert the number of photons to PPF is: $PPF = \frac{# Photons}{avogadro's # * 10^6}$
+
+The equation to convert the number of photons to PPF is: 
+
+$PPF = \frac{Number of Photons}{(Avogadros Number)10^6}$
+
+
 ```{r}
 #Lets convert these numbers into PPF to be able to compare them to what we know
 
