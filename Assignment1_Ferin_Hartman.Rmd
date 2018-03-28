@@ -37,6 +37,7 @@ lambda = seq(6.0e-7,6.05e-7, by=1e-10)
 The following 3 equations are for each 3 steps in the example problem. 
 
 Equation 1: The exponential portion of Planck's equation. This is unitless.
+
 $y = \frac{h c}{\lambda k T}$
 
 ```{r}
@@ -46,6 +47,7 @@ plot(lambda,y,xlab='Wavelength (m)',ylab='Plancks Exponential',main='Exponential
 ```
 
 Equation #2: Spectral Emittance of the sun (I; W/m^2/m)
+
 $I = \frac{2 \pi h c^2}{\lambda^5 e^y - 1}$ 
 
 ```{r}
@@ -54,6 +56,7 @@ plot(lambda,I,xlab='Wavelength (m)',ylab='Spectral Emittance (W/m^2/m)',main='Sp
 ```
 
 Equation #3: This plot is the intensity (MW/m^2) for the given spectral emittance (W/m^2/m) values calculated in equation 2.
+
 $I(\lambda) = I[max(\lambda)-min(\lambda)]*10^{-6}$
 
 The solid grey line is the median value for intensity. 
@@ -166,6 +169,9 @@ I_eye = 4.0e-11 # Units - W/m^2
 #Speed of light in a vacuum: c = 3.0e8 # Units - m/s
 ```
 Secondly, we calculate the area of the pupil:
+
+$A_{pupil} = \pi (\frac{d}{2})^2$
+
 (According to NCBI the diameter of a human pupil ranges from 2 mm to 8mm)
 
 ```{r}
@@ -183,6 +189,7 @@ pupil_area = pi*((d/2)^2) # Units - m^2
 ```
 
 Third, we calculate the power reaching the eye:
+$Power Reached = Intensity * A_{pupil}$
 
 ```{r}
 
@@ -190,6 +197,8 @@ Third, we calculate the power reaching the eye:
 Power_reach_eye = I_eye*pupil_area # Units - W
 ```
 Fourth, we calculate the energy of a photon for wavelengths in the visible spectrum:
+
+$e = \frac{hc}{\lambda_{pupil}}$
 
 ```{r}
 
@@ -201,7 +210,11 @@ lam_pupil = array(c(455e-9,492e-9,577e-9,597e-9,622e-9,780e-9))
 e = (h*c)/lam_pupil #Units - J
 
 ```
-Fifth, we calculate the amount of photons reaching the eye
+Fifth, we calculate the amount of photons reaching the eye:
+
+$Photons Reached = \frac{Power Reached}{e}$
+
+
 ```{r}
 
 #Create Vector for Calculations
