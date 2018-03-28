@@ -194,7 +194,8 @@ Fourth, we calculate the energy of a photon for wavelengths in the visible spect
 ```{r}
 
 #Range of wavelength in the visible spectrum
-lam_pupil = seq(380e-9,780e-9,by = 1e-9) #Units - m
+#lam_pupil = seq(380e-9,780e-9,by = 1e-9) #Units - m
+lam_pupil = array(c(455e-9,492e-9,577e-9,597e-9,622e-9,780e-9))
 
 #Energy of a photon
 e = (h*c)/lam_pupil #Units - J
@@ -204,47 +205,45 @@ Fifth, we calculate the amount of photons reaching the eye
 ```{r}
 
 #Create Vector for Calculations
-Photons_reach_eye = matrix(0,401,7)
+Photons_reach_eye = matrix(0,6,7)
 
 #Number of photons reaching the eye
-for(i in 1:401){
+for(i in 1:6){
   for(j in 1:7){
     Photons_reach_eye[i,j] = Power_reach_eye[j]/e[i] #Units - photons/s
   }
 }
   
-
+Photons_reach_eye = t(Photons_reach_eye)
 ```
 Sixth, we plot the results of this experiment:
 
 ```{r}
 #Set data up in a frame to plot
-data_pup = data.frame(x = lam_pupil,y1 = Photons_reach_eye[,1], y2 = Photons_reach_eye[,2], y3 = Photons_reach_eye[,3], y4 = Photons_reach_eye[,4], y5 = Photons_reach_eye[,5], y6 = Photons_reach_eye[,6], y7 = Photons_reach_eye[,7])
+#data_pup = data.frame(x = lam_pupil,y1 = Photons_reach_eye[,1], y2 = Photons_reach_eye[,2], y3 = #Photons_reach_eye[,3], y4 = Photons_reach_eye[,4], y5 = Photons_reach_eye[,5], y6 = #Photons_reach_eye[,6], y7 = Photons_reach_eye[,7])
 
 #Plotting 
-col_set = rainbow(ncol(Photons_reach_eye))
-matplot(lam_pupil,Photons_reach_eye,type = "l",main = "Photons That Reach The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Wavelength (m)",ylab = "Number of Photons",lty = "solid", lwd = "2",col = col_set)
-leg.txt <- c("Pupil Size = 2mm","Pupil Size = 3mm","Pupil Size = 4mm","Pupil Size = 5mm","Pupil Size = 6mm","Pupil Size = 7mm","Pupil Size = 8mm")
+col_set = c("Violet","Blue","Green","Yellow","Orange","Red")
+palette(col_set)
+matplot(pupil_area,Photons_reach_eye,type = "l",main = "Photons That Reach The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "Number of Photons",lty = "solid", lwd = "2",col = col_set)
+leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
 cex = .5
-legend(lam_pupil[1],Photons_reach_eye[401,7],leg.txt,cex = .5,lwd = 2, col = col_set)
+legend(pupil_area[1],Photons_reach_eye[7,6],leg.txt,cex = .5,lwd = 2, col = col_set)
 ```
-
+The equation to convert the number of photons to PPF is: $PPF = \frac{# Photons}{avogadro's # * 10^6}$
 ```{r}
-#Lets convert these numbers into PPFD to be able to compare them to what we know
+#Lets convert these numbers into PPF to be able to compare them to what we know
 
-PPFD_eye = Photons_reach_eye /(6.02e23) * 1e6 / pupil_area
+PPF_eye = (Photons_reach_eye /(6.02e23) * 1e6)
 
 #Now let's plot the results of this, like we plotted the others
-
-#Set data up in a frame to plot
-data_pup = data.frame(x = lam_pupil,y1 = PPFD_eye[,1], y2 = PPFD_eye[,2], y3 = PPFD_eye[,3], y4 = PPFD_eye[,4], y5 = PPFD_eye[,5], y6 = PPFD_eye[,6], y7 = Photons_reach_eye[,7])
-
 #Plotting 
-col_set = rainbow(ncol(Photons_reach_eye))
-matplot(lam_pupil,PPFD_eye,type = "l",main = "Photons Flux Density at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Wavelength (m)",ylab = "Photon Flux Density",lty = "solid", lwd = "2",col = col_set)
-leg.txt <- c("Pupil Size = 2mm","Pupil Size = 3mm","Pupil Size = 4mm","Pupil Size = 5mm","Pupil Size = 6mm","Pupil Size = 7mm","Pupil Size = 8mm")
+col_set = c("Violet","Blue","Green","Yellow","Orange","Red")
+palette(col_set)
+matplot(pupil_area,PPF_eye,type = "l",main = "PPF That Reaches The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "PPF (micromoles/s)",lty = "solid", lwd = "2",col = col_set)
+leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
 cex = .5
-legend(lam_pupil[1],PPFD_eye[401,7],leg.txt,cex = .5,lwd = 2, col = col_set)
+legend(pupil_area[1],PPF_eye[7,6],leg.txt,cex = .5,lwd = 2, col = col_set)
 ```
 
 ##Now Let's Use The Measured Spectrum To See How Many Photons Our Eyes Were Intercepting
