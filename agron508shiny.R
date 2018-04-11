@@ -15,14 +15,20 @@ ui <- dashboardPage(
     ## Menu ####
     sidebarMenu(
       menuItem("Introduction",tabName = "Intro", icon = icon("cog", lib = "glyphicon")),
-      menuItem("Example 1",tabName = "Example1", icon = icon("th")),
-      menuItem("Device data",tabName = "Devicedata", icon = icon("check-circle"))
+      menuItem("Theo-Kelsie",
+               tabName = "groupTK", icon = icon("th"),
+               menuItem("Graph 1", tabName = "graph1_TK", icon = icon("angle-right")),
+               menuItem("Graph 2", tabName = "graph2_TK", icon = icon("angle-right"))),
+       menuItem("Lin-Mitch-Anabelle",
+                tabName = "groupLMA", icon = icon("th"),
+                menuItem("Graph 1", tabName = "graph1_LMA", icon = icon("angle-right")),
+                menuItem("Device data",tabName = "Devicedata", icon = icon("angle-right")))
   )),
   
   ### Body Content 
   dashboardBody(
     tabItems(
-      # First tab item
+      # First tab item : Introduction
       tabItem(tabName = "Intro",
               fluidRow( 
                 box(title = "General Information about the tool",width=12,
@@ -36,25 +42,16 @@ ui <- dashboardPage(
                     "write some extra info")
                 )
               ), # end first tabItem
-      # Second tab item
+      # Second tab item : Theo & Kelsie 
       tabItem(
-        tabName = "Example1",
-        h2("Example with a R dataset"),
+        tabName = "groupTK",
         fluidRow(
-          column(width = 12,
-                 box(width = 10, status = "success",
-                     radioButtons("feed", # name of the  input = name of the data column
-                                              "Product type", # label 
-                                              choices=c("horsebean","linseed","soybean","sunflower","meatmeal","casein"), # choice given to the user
-                                              selected="horsebean"), # default selected choice,
-                     plotOutput("boxplot"), # display the plot defined in server 
-                     tableOutput("results") # display the table defined in server 
-        )))
+          column(width = 12))
        
          ), # end tabItem 2
       
       
-      # Third tab item
+      # Third tab item: Lin Mitch & Anabelle
       tabItem(
         tabName = "Devicedata",
         h2("Display the data we collected in class"),
@@ -77,19 +74,9 @@ ui <- dashboardPage(
 # server contains the instruction to run the analysis, plot graphs and so on 
 server <- function(input, output) { 
   
-  output$boxplot<-renderPlot({ # renderPlot = function to create a reactive plot
-    sub <-subset(chickwts,chickwts$feed==input$feed) # sub is the dataset related to 
-    ggplot(sub, aes(feed,weight)) +  # ggplot to display the boxplot
-      geom_boxplot() + 
-      geom_point()
-  })
-  
-  output$results <- renderTable({  # create a reactive table 
-    sub <-subset(chickwts,chickwts$feed==input$feed) 
-  })
-  
-  
 
+  # renderPlotly is you want interactive graph, otherwise use renderPlot
+  
   output$plot_devicedata <- renderPlotly ({
     tab<-read.csv("https://raw.githubusercontent.com/Agron508/Homework/master/SS-110_1010_12918noon.csv")
     data<-tab[2:482,] # select rows
@@ -107,6 +94,9 @@ server <- function(input, output) {
   })
   
   } # end server 
+
+
+
 
 # shinyApp links ui and server and allows you to run the app
 shinyApp(ui, server)
