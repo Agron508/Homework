@@ -1,10 +1,11 @@
 ---
-title: "Assignment One: Agronomy 508"
+title: 'Assignment One: Agronomy 508'
 author: "Kelsie Ferin and Theo Hartman"
 date: "March 3, 2018"
 output:
-  html_document: default
+  word_document: default
   pdf_document: default
+  html_document: default
 ---
 
 
