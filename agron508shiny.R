@@ -47,7 +47,7 @@ ui <- dashboardPage(
         fluidRow(
           column(width = 12,
                  box(width = 10, status = "success",
-                     plotOutput("plot_eyes", height = "800px"))))
+                     plotlyOutput("plot_eyes", height = "800px"))))
        
          ), # end tabItem 2
       
@@ -94,7 +94,7 @@ server <- function(input, output) {
     p 
   })
   
-  output$plot_eye <- renderPlot ({
+  output$plot_eyes <- renderPlotly ({
     #Intensity of radiation reaching the eye in order for the human eye to percieve light.
     I_eye = 4.0e-11 # Units - W/m^2
     
@@ -132,8 +132,8 @@ server <- function(input, output) {
     Photons_reach_eye = t(Photons_reach_eye)
     col_set = c("Violet","Blue","Green","Yellow","Orange","Red")
     palette(col_set)
-    matplot(pupil_area,Photons_reach_eye,type = "l",main = "Photons That Reach The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "Number of Photons",lty = "solid", lwd = "2",col = col_set)
-    leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
+    #matplot(pupil_area,Photons_reach_eye,type = "l",main = "Photons That Reach The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "Number of Photons",lty = "solid", lwd = "2",col = col_set)
+    #leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
     cex = .5
     legend(pupil_area[1],Photons_reach_eye[7,6],leg.txt,cex = .5,lwd = 2, col = col_set)
     PPF_eye = (Photons_reach_eye /(6.02e23) * 1e6)
@@ -141,9 +141,14 @@ server <- function(input, output) {
     #Plotting 
     col_set = c("Violet","Blue","Green","Yellow","Orange","Red")
     palette(col_set)
-    
-    p <- matplot(pupil_area,PPF_eye,type = "l",main = "PPF That Reaches The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "PPF (micromoles/s)",lty = "solid", lwd = "2",col = col_set)
-    leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
+    a = c(1:10)
+    b = c(1:10)
+    p <- plot_ly(x = a, y = b, type = 'scatter', mode = 'lines') %>%
+      layout(title = "",
+             xaxis = list(title = "wavelength (nm)"),
+             yaxis = list (title = "Spectral irradiance (W/m2/microm)"))
+    #p <- matplot(pupil_area,PPF_eye,type = "l",main = "PPF That Reaches The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "PPF (micromoles/s)",lty = "solid", lwd = "2",col = col_set)
+    #leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
     
     p 
   })
