@@ -72,7 +72,8 @@ ui <- dashboardPage(
         fluidRow(column(width=12,
                         box(title = "Information", status = "success",
                             width = 12, solidHeader = TRUE,
-                            "write text here"
+                            "We calculated yield potential (MJ/m2)(Yp) by total incident solar radiation during growing season ((MJ/m2))(St), light interception efficiency(Ei), energy conversion efficiency(Ec)
+Yp=St*Ei*Ec"
                         )))
       ) # end four tab Item
       
