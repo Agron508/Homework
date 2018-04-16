@@ -34,9 +34,7 @@ ui <- dashboardPage(
                            status = "info", solidHeader = TRUE, collapsible = TRUE,
                            "This on-line interactive tool is designed by the students of AGRON 508 spring 2018",
                            br(),
-                    "We included interactive graphs based on our assignment goals (1) to measure the wavelength of 
-                    light that can be observed by a human eye. (2) Calculate potential yield using irradiance
-                    measurements derived from a spectroradiometer."),
+                           "We included interactive graphs based on our assignments"),
                 
                 box(title = "Other box",width=12,
                     status = "success", solidHeader = TRUE, collapsible = TRUE,
@@ -78,9 +76,13 @@ ui <- dashboardPage(
                      plotlyOutput("Montieth", height = "600px")))),
         br(),
         fluidRow(column(width=12,
-                        box(title = "Information", status = "success",
+                        box(title = "Yield potential", status = "success",
                             width = 12, solidHeader = TRUE,
-                            "We calculated yield potential (MJ/m2)(Yp) by total incident solar radiation during growing season ((MJ/m2))(St), light interception efficiency(Ei), energy conversion efficiency(Ec)
+                            "Yield potential is defined as the yield of a cultivar when grown in environments to which it 
+is adapted, with nutrients and water non-limiting and with pests, diseases, weeds, lodging, and other stresses effectively 
+controlled. <br>
+We calculated yield potential (MJ/m2)(Yp) by total incident solar radiation during growing season ((MJ/m2))(St), light interception 
+efficiency(Ei), energy conversion efficiency(Ec)<br>
 Yp=St*Ei*Ec"
                         )))
       ) # end four tab Item
