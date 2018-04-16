@@ -78,12 +78,10 @@ ui <- dashboardPage(
         fluidRow(column(width=12,
                         box(title = "Yield potential", status = "success",
                             width = 12, solidHeader = TRUE,
-                            "Yield potential is defined as the yield of a cultivar when grown in environments to which it 
+                            paste("Yield potential is defined as the yield of a cultivar when grown in environments to which it 
 is adapted, with nutrients and water non-limiting and with pests, diseases, weeds, lodging, and other stresses effectively 
-controlled. <br>
-We calculated yield potential (MJ/m2)(Yp) by total incident solar radiation during growing season ((MJ/m2))(St), light interception 
-efficiency(Ei), energy conversion efficiency(Ec)<br>
-Yp=St*Ei*Ec"
+controlled.", "We calculated yield potential (MJ/m2)(Yp) by total incident solar radiation during growing season ((MJ/m2))(St), light interception 
+efficiency(Ei), energy conversion efficiency(Ec)","Yp=St*Ei*Ec", sep="\n")
                         )))
       ) # end four tab Item
       
