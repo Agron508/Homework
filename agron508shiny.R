@@ -20,7 +20,7 @@ ui <- dashboardPage(
                menuItem("Graph 1", tabName = "graph1_TK", icon = icon("angle-right"))),
        menuItem("Lin-Mitch-Anabelle",
                 tabName = "groupLMA", icon = icon("th"),
-                menuItem("Graph 1", tabName = "graph1_LMA", icon = icon("angle-right")),
+                menuItem("Montieth plot", tabName = "Montieth_plot", icon = icon("angle-right")),
                 menuItem("Device data",tabName = "Devicedata", icon = icon("angle-right")))
   )),
   
@@ -59,8 +59,22 @@ ui <- dashboardPage(
         fluidRow(
           column(width = 12,
                  box(width = 10, status = "success",
-                     plotlyOutput("plot_devicedata", height = "800px"))))
-      ) # end third tab Item
+                     plotlyOutput("plot_devicedata", height = "600px"))))
+      ), # end third tab Item
+      tabItem( 
+        tabName = "Montieth_plot",
+        h2("Interactive 3D plot of biomass (MJ/m2)"),
+        fluidRow(
+          column(width = 12,
+                 box(width = 10, status = "success",
+                     plotlyOutput("Montieth", height = "600px")))),
+        br(),
+        fluidRow(column(width=12,
+                        box(title = "Information", status = "success",
+                            width = 12, solidHeader = TRUE,
+                            "write text here"
+                        )))
+      ) # end four tab Item
       
     )# end tabItems
     
@@ -153,6 +167,23 @@ server <- function(input, output) {
     p 
   })
   
+  
+  
+  output$Montieth <- renderPlotly ({
+    x<-c(0.5,0.6,0.7,0.75) # x = Ei
+    y<-c(0.05,0.1,0.2,0.3) # y = Ec
+    St<-2000
+    data<-expand.grid(x,y) # gives all the combinations of x and y
+    colnames(data)<-c("x","y")
+    data$z<-St*0.478*data$x*data$y  # biomass in MJ/m2
+    
+    p <- plot_ly(data, x = ~x, y = ~y, z = ~z, color = ~z) %>%
+      add_markers() %>%
+      layout(scene = list(xaxis = list(title = 'Ei'),
+                          yaxis = list(title = 'Ec'),
+                          zaxis = list(title = 'Yp')))
+    p
+  })
   } # end server 
 
 
