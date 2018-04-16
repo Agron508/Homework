@@ -1,4 +1,4 @@
-in####### script AGRON 508 demo Shiny #######
+####### script AGRON 508 demo Shiny #######
 library(shiny)
 library(shinydashboard)
 library(ggplot2)
@@ -17,8 +17,7 @@ ui <- dashboardPage(
       menuItem("Introduction",tabName = "Intro", icon = icon("cog", lib = "glyphicon")),
       menuItem("Theo-Kelsie",
                tabName = "groupTK", icon = icon("th"),
-               menuItem("Graph 1", tabName = "graph1_TK", icon = icon("angle-right")),
-               menuItem("Graph 2", tabName = "graph2_TK", icon = icon("angle-right"))),
+               menuItem("Graph 1", tabName = "graph1_TK", icon = icon("angle-right"))),
        menuItem("Lin-Mitch-Anabelle",
                 tabName = "groupLMA", icon = icon("th"),
                 menuItem("Graph 1", tabName = "graph1_LMA", icon = icon("angle-right")),
@@ -95,7 +94,7 @@ server <- function(input, output) {
     p 
   })
   
-  output$plot_eye <- renderPlotly ({
+  output$plot_eye <- renderPlot ({
     #Intensity of radiation reaching the eye in order for the human eye to percieve light.
     I_eye = 4.0e-11 # Units - W/m^2
     
