@@ -123,9 +123,12 @@ pupil_area = pi*((d/2)^2) # Units - m^2
 numberphotons<-function(lambda,pupil_area) {  # see PPFD function comments to understand how work the function. Input = lambda
   
   intensity<-4.00*10^-11 * pupil_area
-  hc<-1.24 
+  #hc<-1.24 
+  h<-6.63e-34
+  c<-3.0e8
   E<-hc/lambda 
-  denom<-1.602 *10^-19*E  
+  #denom<-1.602 *10^-19*E  
+  denom<-(h*c)/lambda
   result<-intensity/denom
   return(result)
 }
@@ -148,7 +151,8 @@ d = seq(2,8,by = 1) # Units - mm
 d = d*1e-3 # Units - m 
 pupil_area = pi*((d/2)^2) # Units - m^2
 
-lambda<-seq(400,800,by=50)
+#lambda<-seq(400,800,by=50)
+lambda<-c(455e-9,492e-9,577e-9,597e-9,622e-9,780e-9)
 data<-expand.grid(lambda,pupil_area) # gives all the combinations of lambda and pupil areas
 library(dplyr)
 
@@ -163,6 +167,18 @@ data %>% ggplot(aes(x=Var1,y=z,colour=as.factor(round(Var2,6)))) + geom_point() 
 
 
 ```
+
+#### 4.4 Graph giving the number of photons per micromoles/s for any value of wavelenght and pupil area
+```{r}
+data<-data %>% mutate(z=numberphotons(Var1,Var2)/(6.02e23) * 1e6)
+data %>% ggplot(aes(x=Var1,y=z,colour=as.factor(round(Var2,6)))) + geom_point() +
+  ylab("number of photons") + # specify y axis legend
+  xlab("wavelength (nm)") + # specify x axis legend 
+  ggtitle("PPF as a function of wavelenght for different pupil area") 
+
+```
+
+
 
 
 ### 5.Calculate CO2/O2 ratio in plant
