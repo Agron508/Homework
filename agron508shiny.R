@@ -20,7 +20,7 @@ ui <- dashboardPage(
                menuItem("Graph 1", tabName = "graph1_TK", icon = icon("angle-right"))),
        menuItem("Lin-Mitch-Anabelle",
                 tabName = "groupLMA", icon = icon("th"),
-                menuItem("Graph 1", tabName = "graph1_LMA", icon = icon("angle-right")),
+                menuItem("Montieth plot", tabName = "Montieth_plot", icon = icon("angle-right")),
                 menuItem("Device data",tabName = "Devicedata", icon = icon("angle-right")))
   )),
   
@@ -59,8 +59,31 @@ ui <- dashboardPage(
         fluidRow(
           column(width = 12,
                  box(width = 10, status = "success",
-                     plotlyOutput("plot_devicedata", height = "800px"))))
-      ) # end third tab Item
+                     plotlyOutput("plot_devicedata", height = "600px")))),
+        br(),
+        fluidRow(column(width=12,
+                        box(title = "Information", status = "success",
+                            width = 12, solidHeader = TRUE,
+                            "Write text"
+                        )))
+      ), # end third tab Item
+      tabItem( 
+        tabName = "Montieth_plot",
+        h2("Interactive 3D plot of biomass (MJ/m2)"),
+        fluidRow(
+          column(width = 12,
+                 box(width = 10, status = "success",
+                     plotlyOutput("Montieth", height = "600px")))),
+        br(),
+        fluidRow(column(width=12,
+                        box(title = "Yield potential", status = "success",
+                            width = 12, solidHeader = TRUE,
+                            paste("Yield potential is defined as the yield of a cultivar when grown in environments to which it 
+is adapted, with nutrients and water non-limiting and with pests, diseases, weeds, lodging, and other stresses effectively 
+controlled.", "We calculated yield potential (MJ/m2)(Yp) by total incident solar radiation during growing season ((MJ/m2))(St), light interception 
+efficiency(Ei), energy conversion efficiency(Ec)","Yp=St*Ei*Ec", sep="\n")
+                        )))
+      ) # end four tab Item
       
     )# end tabItems
     
@@ -94,7 +117,7 @@ server <- function(input, output) {
     p 
   })
   
-  output$plot_eye <- renderPlot ({
+  output$plot_eyes <- renderPlotly ({
     #Intensity of radiation reaching the eye in order for the human eye to percieve light.
     I_eye = 4.0e-11 # Units - W/m^2
     
@@ -132,8 +155,8 @@ server <- function(input, output) {
     Photons_reach_eye = t(Photons_reach_eye)
     col_set = c("Violet","Blue","Green","Yellow","Orange","Red")
     palette(col_set)
-    matplot(pupil_area,Photons_reach_eye,type = "l",main = "Photons That Reach The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "Number of Photons",lty = "solid", lwd = "2",col = col_set)
-    leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
+    #matplot(pupil_area,Photons_reach_eye,type = "l",main = "Photons That Reach The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "Number of Photons",lty = "solid", lwd = "2",col = col_set)
+    #leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
     cex = .5
     legend(pupil_area[1],Photons_reach_eye[7,6],leg.txt,cex = .5,lwd = 2, col = col_set)
     PPF_eye = (Photons_reach_eye /(6.02e23) * 1e6)
@@ -141,13 +164,35 @@ server <- function(input, output) {
     #Plotting 
     col_set = c("Violet","Blue","Green","Yellow","Orange","Red")
     palette(col_set)
-    
-    p <- matplot(pupil_area,PPF_eye,type = "l",main = "PPF That Reaches The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "PPF (micromoles/s)",lty = "solid", lwd = "2",col = col_set)
-    leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
+    a = c(1:10)
+    b = c(1:10)
+    p <- plot_ly(x = a, y = b, type = 'scatter', mode = 'lines') %>%
+      layout(title = "",
+             xaxis = list(title = "wavelength (nm)"),
+             yaxis = list (title = "Spectral irradiance (W/m2/microm)"))
+    #p <- matplot(pupil_area,PPF_eye,type = "l",main = "PPF That Reaches The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "PPF (micromoles/s)",lty = "solid", lwd = "2",col = col_set)
+    #leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
     
     p 
   })
   
+  
+  
+  output$Montieth <- renderPlotly ({
+    x<-c(0.5,0.6,0.7,0.75) # x = Ei
+    y<-c(0.05,0.1,0.2,0.3) # y = Ec
+    St<-2000
+    data<-expand.grid(x,y) # gives all the combinations of x and y
+    colnames(data)<-c("x","y")
+    data$z<-St*0.478*data$x*data$y  # biomass in MJ/m2
+    
+    p <- plot_ly(data, x = ~x, y = ~y, z = ~z, color = ~z) %>%
+      add_markers() %>%
+      layout(scene = list(xaxis = list(title = 'Ei'),
+                          yaxis = list(title = 'Ec'),
+                          zaxis = list(title = 'Yp')))
+    p
+  })
   } # end server 
 
 
