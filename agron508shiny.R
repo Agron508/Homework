@@ -67,7 +67,7 @@ ui <- dashboardPage(
         fluidRow(
           column(width = 12,
                  box(width = 10, status = "success",
-                     plotlyOutput("Montieth", height = "800px")))),
+                     plotlyOutput("Montieth", height = "800px"))))
       ) # end four tab Item
       
     )# end tabItems
