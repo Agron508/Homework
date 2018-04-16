@@ -48,7 +48,7 @@ ui <- dashboardPage(
         fluidRow(
           column(width = 12,
                  box(width = 10, status = "success",
-                     plotlyOutput("plot_eyes", height = "800px"))))
+                     plotOutput("plot_eyes", height = "800px"))))
        
          ), # end tabItem 2
       
@@ -95,7 +95,7 @@ server <- function(input, output) {
     p 
   })
   
-  output$plot_eye <- renderPlotly ({
+  output$plot_eye <- renderPlot ({
     #Intensity of radiation reaching the eye in order for the human eye to percieve light.
     I_eye = 4.0e-11 # Units - W/m^2
     
