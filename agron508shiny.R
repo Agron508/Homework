@@ -119,64 +119,6 @@ server <- function(input, output) {
     p 
   })
   
-  output$plot_eyes <- renderPlotly ({
-    #Intensity of radiation reaching the eye in order for the human eye to percieve light.
-    I_eye = 4.0e-11 # Units - W/m^2
-    
-    #The following are called in the beginning of the assingment:
-    #Plancks Constant: 
-    h = 6.63e-34 # Units - J*s
-    #Speed of light in a vacuum: 
-    c = 3.0e8 # Units - m/s
-    #Diameter of a human pupil
-    d = seq(2,8,by = 1) # Units - mm
-    
-    #Convert the diameter to meters
-    d = d*1e-3 # Units - m 
-    
-    #Calculate the pupil area
-    pupil_area = pi*((d/2)^2) # Units - m^2
-    #Power reaching the eye
-    Power_reach_eye = I_eye*pupil_area # Units - W
-    #Range of wavelength in the visible spectrum
-    #lam_pupil = seq(380e-9,780e-9,by = 1e-9) #Units - m
-    lam_pupil = array(c(455e-9,492e-9,577e-9,597e-9,622e-9,780e-9))
-    
-    #Energy of a photon
-    e = (h*c)/lam_pupil #Units - J
-    #Create Vector for Calculations
-    Photons_reach_eye = matrix(0,6,7)
-    
-    #Number of photons reaching the eye
-    for(i in 1:6){
-      for(j in 1:7){
-        Photons_reach_eye[i,j] = Power_reach_eye[j]/e[i] #Units - photons/s
-      }
-    }
-    
-    Photons_reach_eye = t(Photons_reach_eye)
-    col_set = c("Violet","Blue","Green","Yellow","Orange","Red")
-    palette(col_set)
-    #matplot(pupil_area,Photons_reach_eye,type = "l",main = "Photons That Reach The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "Number of Photons",lty = "solid", lwd = "2",col = col_set)
-    #leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
-    cex = .5
-    legend(pupil_area[1],Photons_reach_eye[7,6],leg.txt,cex = .5,lwd = 2, col = col_set)
-    PPF_eye = (Photons_reach_eye /(6.02e23) * 1e6)
-    #Now let's plot the results of this, like we plotted the others
-    #Plotting 
-    col_set = c("Violet","Blue","Green","Yellow","Orange","Red")
-    palette(col_set)
-    a = c(1:10)
-    b = c(1:10)
-    p <- plot_ly(x = a, y = b, type = 'scatter', mode = 'lines') %>%
-      layout(title = "",
-             xaxis = list(title = "wavelength (nm)"),
-             yaxis = list (title = "Spectral irradiance (W/m2/microm)"))
-    #p <- matplot(pupil_area,PPF_eye,type = "l",main = "PPF That Reaches The Human Eye at Different Wavelengths with Different Pupil Sizes",cex.main = .8,xlab = "Pupil Area (m^2)",ylab = "PPF (micromoles/s)",lty = "solid", lwd = "2",col = col_set)
-    #leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
-    
-    p 
-  })
   
   
   
