@@ -59,7 +59,7 @@ ui <- dashboardPage(
         fluidRow(
           column(width = 12,
                  box(width = 10, status = "success",
-                     plotlyOutput("plot_devicedata", height = "800px"))))
+                     plotlyOutput("plot_devicedata", height = "600px"))))
       ), # end third tab Item
       tabItem( 
         tabName = "Montieth_plot",
@@ -67,7 +67,7 @@ ui <- dashboardPage(
         fluidRow(
           column(width = 12,
                  box(width = 10, status = "success",
-                     plotlyOutput("Montieth", height = "800px")))),
+                     plotlyOutput("Montieth", height = "600px")))),
         br(),
         fluidRow(column(width=12,
                         box(title = "Information", status = "success",
