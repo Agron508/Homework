@@ -43,11 +43,17 @@ ui <- dashboardPage(
               ), # end first tabItem
       # Second tab item : Theo & Kelsie 
       tabItem(
-        tabName = "groupTK",
+        tabName = "graph1_TK",
         fluidRow(
           column(width = 12,
                  box(width = 10, status = "success",
-                     plotlyOutput("plot_eyes", height = "800px"))))
+                     plotlyOutput("plot_eyes", height = "800px")))),
+        br(),
+        fluidRow(column(width=12,
+                        box(title = "Information", status = "success",
+                            width = 12, solidHeader = TRUE,
+                            "Write text"
+                        )))
        
          ), # end tabItem 2
       
