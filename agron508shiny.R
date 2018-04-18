@@ -35,6 +35,10 @@ ui <- dashboardPage(
                            "This on-line interactive tool is designed by the students of AGRON 508 spring 2018",
                            br(),
                            "We included interactive graphs based on our assignments"),
+                br(),
+                "We included interactive graphs based on our assignment goals (1) to measure the wavelength of 
+                    light that can be observed by a human eye. (2) Calculate potential yield using irradiance
+                    measurements derived from a spectroradiometer."),
                 
                 box(title = "Other box",width=12,
                     status = "success", solidHeader = TRUE, collapsible = TRUE,
