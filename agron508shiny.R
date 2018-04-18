@@ -123,10 +123,27 @@ server <- function(input, output) {
     p 
   })
   
-  
-  
+
   
   output$Montieth <- renderPlotly ({
+    x<-c(0.5,0.6,0.7,0.75) # x = Ei
+    y<-c(0.05,0.1,0.2,0.3) # y = Ec
+    St<-2000
+    data<-expand.grid(x,y) # gives all the combinations of x and y
+    colnames(data)<-c("x","y")
+    data$z<-St*0.478*data$x*data$y  # biomass in MJ/m2
+    
+    p <- plot_ly(data, x = ~x, y = ~y, z = ~z, color = ~z) %>%
+      add_markers() %>%
+      layout(scene = list(xaxis = list(title = 'Ei'),
+                          yaxis = list(title = 'Ec'),
+                          zaxis = list(title = 'Yp')))
+    p
+  })
+  
+ 
+   # coppied from Monteith to make sure a plot shows!!   
+  output$plot_eyes <- renderPlotly ({
     x<-c(0.5,0.6,0.7,0.75) # x = Ei
     y<-c(0.05,0.1,0.2,0.3) # y = Ec
     St<-2000
