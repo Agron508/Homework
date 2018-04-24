@@ -264,7 +264,8 @@ $PPF = \frac{Number of Photons}{(Avogadros Number)10^6}$
 
 ```{r}
 #Lets convert these numbers into PPF to be able to compare them to what we know
-
+library(plotly)
+library(ggplot2)
 PPF_eye = (Photons_reach_eye /(6.02e23) * 1e6)
 
 #Now let's plot the results of this, like we plotted the others
@@ -275,6 +276,24 @@ matplot(pupil_area,PPF_eye,type = "l",main = "PPF That Reaches The Human Eye at 
 leg.txt <- c("Wavelength = 455 nm","Wavelength = 492 nm","Wavelength = 577 nm","Wavelength = 597 nm","Wavelength = 622 nm","Wavelength = 780 nm")
 cex = .5
 legend(pupil_area[1],PPF_eye[7,6],leg.txt,cex = .5,lwd = 2, col = col_set)
+
+PPF_EYE_1 = PPF_eye[,1]
+PPF_EYE_2 = PPF_eye[,2]
+PPF_EYE_3 = PPF_eye[,3]
+PPF_EYE_4 = PPF_eye[,4]
+PPF_EYE_5 = PPF_eye[,5]
+PPF_EYE_6 = PPF_eye[,6]
+
+data <- data.frame(pupil_area, PPF_EYE_1, PPF_EYE_2, PPF_EYE_3, PPF_EYE_4,PPF_EYE_5,PPF_EYE_6)
+
+p = plot_ly(data, x = ~pupil_area, y = ~PPF_EYE_1, name = '455 nm',type = 'scatter', mode = 'lines') #%>%
+  #add_trace(y = ~PPF_EYE_2, name = '492 nm', mode = 'lines+markers') %>%
+  #add_trace(y = ~PPF_EYE_3, name = '577 nm', mode = 'lines+markers') %>%
+  #add_trace(y = ~PPF_EYE_4, name = '597 nm', mode = 'lines+markers') %>%
+  #add_trace(y = ~PPF_EYE_5, name = '622 nm', mode = 'lines+markers') %>%
+  #add_trace(y = ~PPF_EYE_6, name = '780 nm', mode = 'lines+markers')
+
+
 ```
 
 ##Now Let's Use The Measured Spectrum To See How Many Photons Our Eyes Were Intercepting

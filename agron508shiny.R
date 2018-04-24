@@ -146,18 +146,44 @@ server <- function(input, output) {
  
    # coppied from Monteith to make sure a plot shows!!   
   output$plot_eyes <- renderPlotly ({
-    x<-c(0.5,0.6,0.7,0.75) # x = Ei
-    y<-c(0.05,0.1,0.2,0.3) # y = Ec
-    St<-2000
-    data<-expand.grid(x,y) # gives all the combinations of x and y
-    colnames(data)<-c("x","y")
-    data$z<-St*0.478*data$x*data$y  # biomass in MJ/m2
+    h=6.62606896e-34
+    c=2.99792458e8 
+    I_eye = 4.0e-11
+    d = seq(2,8,by = 1)
+    d = d*1e-3
+    pupil_area = pi*((d/2)^2)
+    Power_reach_eye = I_eye*pupil_area
+    lam_pupil = array(c(455e-9,492e-9,577e-9,597e-9,622e-9,780e-9))
+    e = (h*c)/lam_pupil
+    Photons_reach_eye = matrix(0,6,7)
+    for(i in 1:6){
+      for(j in 1:7){
+        Photons_reach_eye[i,j] = Power_reach_eye[j]/e[i] #Units - photons/s
+      }
+    }
     
-    p <- plot_ly(data, x = ~x, y = ~y, z = ~z, color = ~z) %>%
-      add_markers() %>%
-      layout(scene = list(xaxis = list(title = 'Ei'),
-                          yaxis = list(title = 'Ec'),
-                          zaxis = list(title = 'Yp')))
+    Photons_reach_eye = t(Photons_reach_eye)
+    PPF_eye = (Photons_reach_eye /(6.02e23) * 1e6)
+    PPF_EYE_1 = PPF_eye[,1]
+    PPF_EYE_2 = PPF_eye[,2]
+    PPF_EYE_3 = PPF_eye[,3]
+    PPF_EYE_4 = PPF_eye[,4]
+    PPF_EYE_5 = PPF_eye[,5]
+    PPF_EYE_6 = PPF_eye[,6]
+    
+    data <- data.frame(pupil_area, PPF_EYE_1, PPF_EYE_2, PPF_EYE_3, PPF_EYE_4,PPF_EYE_5,PPF_EYE_6)
+    
+    p = plot_ly(data, x = ~pupil_area, y = ~PPF_EYE_1, name = '455 nm',type = 'scatter', mode = 'lines+markers') %>%
+    add_trace(y = ~PPF_EYE_2, name = '492 nm', mode = 'lines+markers') %>%
+    add_trace(y = ~PPF_EYE_3, name = '577 nm', mode = 'lines+markers') %>%
+    add_trace(y = ~PPF_EYE_4, name = '597 nm', mode = 'lines+markers') %>%
+    add_trace(y = ~PPF_EYE_5, name = '622 nm', mode = 'lines+markers') %>%
+    add_trace(y = ~PPF_EYE_6, name = '780 nm', mode = 'lines+markers') %>%
+      
+      layout(title = "PPF That Reaches The Human Eye at Different Wavelengths with Different Pupil Sizes",
+             xaxis = list(title = "Pupil Area (m^2)"),
+             yaxis = list (title = "PPF (micromoles/s)"))
+    
     p
   })
   } # end server 
