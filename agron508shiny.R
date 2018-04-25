@@ -54,7 +54,12 @@ ui <- dashboardPage(
         fluidRow(column(width=12,
                         box(title = "Information", status = "success",
                             width = 12, solidHeader = TRUE,
-                            "Write text"
+                            paste("This figure shows the photosynthetic photon flux (PPF) that can be seen by the human eye when the eyes are dialaited to different 
+                                  pupil areas for given wavelengths. The PPF is a measurement that quantifies how much photosynthetically active radiation (PAR) is 
+                                  given off by a light source. Here our light sources in the sun and the wavelenths used in this figure are for the visible spectrum.
+                                  The x-axis (pupil area) are on the on the order of magnitude of 10^-6, or micrometer^2 (micro = the letter mu which is shown on the
+                                  axis values. The y-axis (PPF) is on the order of magnitude of 10^-15 (or a femto (f) which is shown on the axis values). The 
+                                  legend to the top right of the figure shows the different wavelentgh colors and lengths within the visible light spectrum.", sep="\n")
                         )))
        
          ), # end tabItem 2
